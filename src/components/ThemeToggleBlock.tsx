@@ -3,11 +3,11 @@
 import { useTheme } from './ThemeProvider';
 
 export default function ThemeToggleBlock() {
-  const { isDark, toggle } = useTheme();
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <div
-      onClick={toggle}
+      onClick={toggleTheme}
       className={`h-full w-full rounded-3xl backdrop-blur-md border shadow-xl p-6 flex flex-col justify-center items-center transition-all duration-500 hover:scale-[1.05] cursor-pointer group relative overflow-hidden
         ${isDark ? 'bg-slate-800/40 border-slate-600/50' : 'bg-white/40 border-white/60'}
       `}

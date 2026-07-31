@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-serif: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "SimSun", "Noto Serif SC", serif;
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Inter", system-ui, -apple-system, sans-serif;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}
+
+@keyframes float-slower {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(15px, -15px) scale(1.08); }
+  66% { transform: translate(-10px, 10px) scale(0.95); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism */
+:root { --glass-blur: 24px; }
+.glass {
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+.dark .glass {
+  background: rgba(15,23,42,0.5);
+  border-color: rgba(255,255,255,0.1);
+}
+.glass-hover { transition: all 0.5s; }
+.glass-hover:hover { transform: scale(1.02); box-shadow: 0 25px 80px rgba(0,0,0,0.2); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(20,184,166,0.3); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(20,184,166,0.6); }
+* { scrollbar-width: thin; scrollbar-color: rgba(20,184,166,0.3) transparent; }
+
+/* Cursor ring active */
+.active {
+  width: 56px !important;
+  height: 56px !important;
+  border-color: rgba(20,184,166,0.5) !important;
+  box-shadow: 0 0 20px rgba(20,184,166,0.15), inset 0 0 20px rgba(20,184,166,0.05) !important;
+}
+.active .glow { opacity: 1 !important; }
+
+/* Z-index utilities (Tailwind v4 doesn't generate arbitrary values like z-[-2]) */
+.zi-bg { z-index: -2; }
+.zi-fx { z-index: -1; }
+.zi-overlay { z-index: 70; }
+.zi-mobile { z-index: 60; }
+.zi-splash { z-index: 9999; }
+.zi-cursor { z-index: 9999; }
+.zi-trail { z-index: 9998; }

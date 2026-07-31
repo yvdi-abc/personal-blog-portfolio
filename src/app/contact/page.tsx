@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/Cards";
+import siteConfig from "@/siteConfig";
 
 export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
@@ -11,22 +12,44 @@ export default function Contact() {
     setTimeout(() => { btn.textContent = "发送消息 →"; btn.removeAttribute("disabled"); }, 2500);
   };
 
+  const contactItems = [
+    {
+      icon: "✉️",
+      label: "邮箱",
+      value: siteConfig.social.email,
+      link: `mailto:${siteConfig.social.email}`
+    },
+    {
+      icon: "🐙",
+      label: "GitHub",
+      value: siteConfig.social.github.replace('https://', ''),
+      link: siteConfig.social.github
+    },
+  ];
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="w-[90%] max-w-4xl mx-auto mt-24 md:mt-28 px-4 pb-32 relative z-10">
       <SectionTitle label="Contact" title="联系我" desc="期待与你的交流" />
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-4">
-          {[
-            { icon: "✉️", label: "邮箱", value: "hello@yuxi-wang.dev" },
-            { icon: "🐙", label: "GitHub", value: "github.com/yuxi-wang" },
-            { icon: "💼", label: "LinkedIn", value: "linkedin.com/in/yuxi-wang" },
-          ].map((item, i) => (
-            <motion.div key={item.label} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.1, type: "spring" }}
-              className="glass rounded-xl p-4 flex items-center gap-4 hover:translate-x-1 transition-all">
+          {contactItems.map((item, i) => (
+            <motion.a
+              key={item.label}
+              href={item.link}
+              target={item.link.startsWith('http') ? "_blank" : undefined}
+              rel={item.link.startsWith('http') ? "noopener noreferrer" : undefined}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, type: "spring" }}
+              className="glass rounded-xl p-4 flex items-center gap-4 hover:translate-x-1 transition-all cursor-pointer"
+            >
               <div className="w-10 h-10 rounded-lg bg-teal-500/10 flex items-center justify-center text-lg">{item.icon}</div>
-              <div><div className="text-xs text-slate-500 dark:text-slate-400">{item.label}</div><div className="text-sm font-bold text-slate-800 dark:text-white">{item.value}</div></div>
-            </motion.div>
+              <div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">{item.label}</div>
+                <div className="text-sm font-bold text-slate-800 dark:text-white">{item.value}</div>
+              </div>
+            </motion.a>
           ))}
         </div>
         <motion.form onSubmit={handleSubmit}

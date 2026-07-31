@@ -1,10 +1,10 @@
 const siteConfig = {
-  title: "Yuxi Wang · 全栈开发",
-  authorName: "Yuxi Wang",
-  navTitle: "Yuxi",
+  title: "Yvdiの小窝",
+  authorName: "Yvdi",
+  navTitle: "Yvdiの小窝",
   navSuffix: ".",
   navAfter: "Wang",
-  bio: "全栈开发工程师 | 热衷于构建兼具性能与美感的数字产品",
+  bio: "在校大学生|业余开发者",
   avatarUrl: "/avatar.jpg",
   faviconUrl: "/favicon.ico",
   defaultPostCover: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1000&auto=format&fit=crop",
@@ -39,8 +39,8 @@ const siteConfig = {
   ],
 
   social: {
-    github: "https://github.com/yuxi-wang",
-    email: "hello@yuxi-wang.dev",
+    github: "https://github.com/yvdi-abc",
+    email: "3625607718@qq.com",
   },
 
   buildDate: "2026-03-23T00:00:00",

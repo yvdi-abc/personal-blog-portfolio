@@ -1,22 +1,22 @@
 ---
-cover: https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&h=600&fit=crop
+cover: https://upload-bbs.miyoushe.com/upload/2025/06/18/140988855/22eb40c48ba9236ae36894994a6b21c9_3724312739563726854.png?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,png
 ---
 
 # 你好，世界
 
-我是 **Yuxi Wang**，一名全栈开发工程师，热衷于构建兼具性能与美感的数字产品。
+我是 **Yvdi**，一名在校大学生，业余开发者。
 
 ## 关于我
 
-从一行 `console.log("Hello World")` 开始，我在技术的世界里探索了数年。我相信好的技术产品应该：
+从一行 `console.log("Hello World")` 开始，我在技术的世界里探索了1年。希望共同学习和进步：
 
-- 🚀 拥有极致的性能
-- 🎨 具备优雅的体验
-- 💡 解决真实的问题
+- 🚀 效率提升
+- 🎨 UI美化
+- 💡 灵感迸发
 
 ## 技术栈
 
-我的日常工作涉及：
+我的日常学习涉及：
 
 - **前端**: React, Next.js, TypeScript, Tailwind CSS
 - **后端**: Node.js, PostgreSQL
@@ -26,8 +26,8 @@ cover: https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&h=600
 
 如果你想和我交流技术或者合作项目，欢迎通过以下方式联系我：
 
-- 📧 Email: hello@yuxi-wang.dev
-- 💻 GitHub: [@yuxi-wang](https://github.com/yuxi-wang)
+- 📧 Email: 3625607718@qq.com
+- 💻 GitHub: [@yvdi-abc](https://github.com/yvdi-abc)
 
 ---
 

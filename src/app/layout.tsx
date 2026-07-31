@@ -14,7 +14,6 @@ import PageTransition from "@/components/PageTransition";
 import CursorEffect from "@/components/CursorEffect";
 import Footer from "@/components/Footer";
 import ClickEffect from "@/components/ClickEffect";
-import GlobalBottomPlayer from "@/components/GlobalBottomPlayer";
 import BgSettingsButton from "@/components/BgSettingsButton";
 import FireflyEffect from "@/components/FireflyEffect";
 import SakuraEffect from "@/components/SakuraEffect";
@@ -61,7 +60,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {children}
               </PageTransition>
               <Footer />
-              <GlobalBottomPlayer />
             </MusicProvider>
           </ToastProvider>
         </ThemeProvider>

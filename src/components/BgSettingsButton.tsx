@@ -1,10 +1,16 @@
 "use client";
-import { useState } from "react";
-import BgSettingsPanel from "./BgSettings";
+import { useState, useEffect } from "react";
+import BgSettingsPanel, { readBg, applyBlur } from "./BgSettings";
 import { Settings } from "lucide-react";
 
 export default function BgSettingsButton() {
   const [open, setOpen] = useState(false);
+
+  // 页面加载时应用保存的模糊度设置
+  useEffect(() => {
+    const settings = readBg();
+    applyBlur(settings.blur);
+  }, []);
 
   return (
     <>

@@ -96,18 +96,18 @@ export default function BgSettingsPanel({ open, onClose }: Props) {
   const [storageError, setStorageError] = useState("");
   const init = useRef(false);
 
+  // 只在面板打开时初始化
   useEffect(() => {
-    if (!open) return; // 只在面板打开时初始化
+    if (!open) return;
     if (init.current) return;
     init.current = true;
     const data = readBg();
     setSettings(data);
-    applyBlur(data.blur);
   }, [open]);
 
+  // 监听设置变化并应用（无论面板是否打开都要保存）
   const first = useRef(true);
   useEffect(() => {
-    if (!open) return; // 只在面板打开时应用更改
     if (first.current) { first.current = false; return; }
     applyBlur(settings.blur);
     console.log('Applying blur from panel:', settings.blur); // 调试日志
@@ -116,7 +116,7 @@ export default function BgSettingsPanel({ open, onClose }: Props) {
       setTimeout(() => setStorageError(""), 3000);
     } else setStorageError("");
     requestAnimationFrame(() => window.dispatchEvent(new CustomEvent(BG_UPDATE_EVENT)));
-  }, [settings, open]);
+  }, [settings]);
 
   const update = (partial: Partial<BgSettingsData>) =>
     setSettings((prev) => ({ ...prev, ...partial }));

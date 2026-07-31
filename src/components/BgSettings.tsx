@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 
-const BASE = process.env.NODE_ENV === 'production' ? "/personal-blog-portfolio" : "";
+const BASE = "";
 const STORAGE_KEY = "bg-settings";
 export const DEFAULT_IMAGES = ["/bg/bg1.jpg", "/bg/bg2.jpg", "/bg/bg3.jpg"].map((p) => BASE + p);
 

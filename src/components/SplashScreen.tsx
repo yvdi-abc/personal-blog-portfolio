@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import siteConfig from "@/siteConfig";
 
 const shapes = ["●", "■", "▲", "◆", "⬟", "◉"];
 
@@ -53,7 +54,7 @@ export default function SplashScreen() {
 
           <div className="relative z-10 text-center px-6 pointer-events-none">
             <motion.div className="mb-6">
-              {"Yuxi.Wang".split("").map((ch, i) => (
+              {siteConfig.authorName.split("").map((ch, i) => (
                 <motion.span key={i}
                   className="inline-block text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight"
                   initial={{ opacity: 0, y: -80, rotateZ: -30, scale: 0.5 }}
@@ -68,7 +69,7 @@ export default function SplashScreen() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.8, type: "spring", damping: 10, stiffness: 80 }}
               className="text-lg md:text-xl text-teal-400/70 font-light tracking-wider mb-12"
-            >全栈开发 · 独立创作</motion.p>
+            >{siteConfig.bio}</motion.p>
 
             <motion.button onClick={(e) => { e.stopPropagation(); handleEnter(); }}
               initial={{ opacity: 0, y: 40 }}

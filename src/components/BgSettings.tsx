@@ -42,10 +42,6 @@ export function readBg(): BgSettingsData {
   return structuredClone(DEFAULTS);
 }
 
-export function applyBlur(blur: number) {
-  document.documentElement.style.setProperty("--glass-blur", blur + "px");
-}
-
 export const BG_UPDATE_EVENT = "bg-update";
 
 function compressImage(file: File, maxDim = 800): Promise<string> {
@@ -105,12 +101,10 @@ export default function BgSettingsPanel({ open, onClose }: Props) {
     setSettings(data);
   }, [open]);
 
-  // 监听设置变化并应用（无论面板是否打开都要保存）
+  // 监听设置变化并保存
   const first = useRef(true);
   useEffect(() => {
     if (first.current) { first.current = false; return; }
-    applyBlur(settings.blur);
-    console.log('Applying blur from panel:', settings.blur); // 调试日志
     if (!saveSafe(settings)) {
       setStorageError("存储空间不足，已自动清理旧图片");
       setTimeout(() => setStorageError(""), 3000);

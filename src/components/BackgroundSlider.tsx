@@ -22,6 +22,7 @@ export default function BackgroundSlider() {
   const enabled = s.enabled ?? true;
   const interval = s.interval ?? 6;
   const opacity = ((s.opacity ?? 20)) / 100;
+  const blur = s.blur ?? 24;
   const mode = s.mode ?? "images";
   const allImages = getActiveImages(s);
 
@@ -60,7 +61,7 @@ export default function BackgroundSlider() {
   if (!enabled || allImages.length < 2) {
     return (
       <div className="fixed inset-0 pointer-events-none zi-bg">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${img})` }} />
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${img})`, filter: `blur(${blur}px)` }} />
         <div className="absolute inset-0" style={{ backgroundColor: `rgba(0,0,0,${opacity})` }} />
       </div>
     );
@@ -69,9 +70,9 @@ export default function BackgroundSlider() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden zi-bg">
       <div className="absolute inset-0 bg-cover bg-center transition-all duration-[1200ms] ease-in-out"
-        style={{ backgroundImage: `url(${allImages[idx]})`, opacity: fading ? 0 : 1, transform: fading ? "scale(1.05)" : "scale(1)" }} />
+        style={{ backgroundImage: `url(${allImages[idx]})`, filter: `blur(${blur}px)`, opacity: fading ? 0 : 1, transform: fading ? "scale(1.05)" : "scale(1)" }} />
       <div className="absolute inset-0 bg-cover bg-center transition-all duration-[1200ms] ease-in-out"
-        style={{ backgroundImage: `url(${allImages[next]})`, opacity: fading ? 1 : 0, transform: fading ? "scale(1)" : "scale(1.05)" }} />
+        style={{ backgroundImage: `url(${allImages[next]})`, filter: `blur(${blur}px)`, opacity: fading ? 1 : 0, transform: fading ? "scale(1)" : "scale(1.05)" }} />
       <div className="absolute inset-0" style={{ backgroundColor: `rgba(0,0,0,${opacity})` }} />
     </div>
   );

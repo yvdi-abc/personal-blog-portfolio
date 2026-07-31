@@ -5,11 +5,14 @@ import { Settings } from "lucide-react";
 
 export default function BgSettingsButton() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  // 页面加载时应用保存的模糊度设置
+  // 确保在客户端挂载后应用模糊度
   useEffect(() => {
+    setMounted(true);
     const settings = readBg();
     applyBlur(settings.blur);
+    console.log('Applied blur:', settings.blur); // 调试日志
   }, []);
 
   return (

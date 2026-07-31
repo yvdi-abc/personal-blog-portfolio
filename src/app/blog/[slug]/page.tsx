@@ -16,13 +16,20 @@ interface PostData {
   content: string;
 }
 
-export default function Post({ params }: { params: { slug: string } }) {
+export default function Post({ params }: { params: Promise<{ slug: string }> }) {
   const [postData, setPostData] = useState<PostData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [slug, setSlug] = useState<string | null>(null);
 
   useEffect(() => {
+    // Unwrap the params Promise
+    params.then(p => setSlug(p.slug));
+  }, [params]);
+
+  useEffect(() => {
+    if (!slug) return;
+
     // 直接从本地获取文章内容
-    const slug = params.slug;
 
     // 根据 slug 匹配文章（这里简化处理，实际应该从文件读取）
     fetch(`/posts/${slug}.md`)
@@ -83,7 +90,7 @@ export default function Post({ params }: { params: { slug: string } }) {
         console.error(err);
         setLoading(false);
       });
-  }, [params.slug]);
+  }, [slug]);
 
   if (loading) {
     return (

@@ -17,7 +17,7 @@ export interface BgSettingsData {
 }
 
 const DEFAULTS: BgSettingsData = {
-  mode: "images", enabled: true, opacity: 20, interval: 6, blur: 24,
+  mode: "images", enabled: true, opacity: 20, interval: 6, blur: 8,
   customImages: [], activeDefaults: [true, true, true], activeCustom: [],
 };
 
@@ -105,7 +105,6 @@ export default function BgSettingsPanel({ open, onClose }: Props) {
   const first = useRef(true);
   useEffect(() => {
     if (first.current) { first.current = false; return; }
-    console.log('BgSettings changed, blur:', settings.blur, 'saving and dispatching event');
     if (!saveSafe(settings)) {
       setStorageError("存储空间不足，已自动清理旧图片");
       setTimeout(() => setStorageError(""), 3000);
@@ -214,7 +213,7 @@ export default function BgSettingsPanel({ open, onClose }: Props) {
           <div className="flex justify-between text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">
             <span>毛玻璃强度</span><span>{settings.blur}px</span>
           </div>
-          <input type="range" min={0} max={48} value={settings.blur}
+          <input type="range" min={0} max={15} value={settings.blur}
             onChange={(e) => update({ blur: Number(e.target.value) })} className="w-full accent-teal-500" />
           <div className="flex justify-between text-xs text-slate-400 mt-1"><span>清晰</span><span>模糊</span></div>
         </div>

@@ -14,7 +14,6 @@ export default function BackgroundSlider() {
     setMounted(true);
     const sync = () => {
       const newSettings = readBg();
-      console.log('BackgroundSlider sync, blur:', newSettings.blur);
       setSettings(newSettings);
     };
     sync();
@@ -26,11 +25,9 @@ export default function BackgroundSlider() {
   const enabled = s.enabled ?? true;
   const interval = s.interval ?? 6;
   const opacity = ((s.opacity ?? 20)) / 100;
-  const blur = s.blur ?? 24;
+  const blur = s.blur ?? 8;
   const mode = s.mode ?? "images";
   const allImages = getActiveImages(s);
-
-  console.log('BackgroundSlider render, blur:', blur);
 
   // 图片轮换
   useEffect(() => {

@@ -15,7 +15,7 @@ interface Chatter {
 export default function ChattersManager() {
   const [chatters, setChatters] = useState<Chatter[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState<number | 'new' | null>(null);
+  const [editing, setEditing] = useState<string | 'new' | null>(null);
   const [editData, setEditData] = useState<Chatter | null>(null);
 
   useEffect(() => {

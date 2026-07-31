@@ -5,12 +5,16 @@ import matter from 'gray-matter';
 
 export const dynamic = 'force-dynamic';
 
+type RouteContext = {
+  params: Promise<{ slug: string }>;
+};
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: RouteContext
 ) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
     const postsDirectory = path.join(process.cwd(), 'posts');
     const fullPath = path.join(postsDirectory, `${slug}.md`);
 

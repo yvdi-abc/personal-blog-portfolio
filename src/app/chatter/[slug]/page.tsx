@@ -9,8 +9,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const chatter = chattersData.find(c => c.slug === params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const chatter = chattersData.find(c => c.slug === slug);
 
   if (!chatter) {
     return {
@@ -24,8 +25,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default function ChatterDetailPage({ params }: { params: { slug: string } }) {
-  const chatter = chattersData.find(c => c.slug === params.slug);
+export default async function ChatterDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const chatter = chattersData.find(c => c.slug === slug);
 
   if (!chatter) {
     notFound();

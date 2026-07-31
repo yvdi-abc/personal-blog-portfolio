@@ -12,7 +12,11 @@ export default function BackgroundSlider() {
   // 初始化和事件监听
   useEffect(() => {
     setMounted(true);
-    const sync = () => setSettings(readBg());
+    const sync = () => {
+      const newSettings = readBg();
+      console.log('BackgroundSlider sync, blur:', newSettings.blur);
+      setSettings(newSettings);
+    };
     sync();
     window.addEventListener(BG_UPDATE_EVENT, sync);
     return () => window.removeEventListener(BG_UPDATE_EVENT, sync);
@@ -25,6 +29,8 @@ export default function BackgroundSlider() {
   const blur = s.blur ?? 24;
   const mode = s.mode ?? "images";
   const allImages = getActiveImages(s);
+
+  console.log('BackgroundSlider render, blur:', blur);
 
   // 图片轮换
   useEffect(() => {

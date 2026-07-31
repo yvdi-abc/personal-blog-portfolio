@@ -105,6 +105,7 @@ export default function BgSettingsPanel({ open, onClose }: Props) {
   const first = useRef(true);
   useEffect(() => {
     if (first.current) { first.current = false; return; }
+    console.log('BgSettings changed, blur:', settings.blur, 'saving and dispatching event');
     if (!saveSafe(settings)) {
       setStorageError("存储空间不足，已自动清理旧图片");
       setTimeout(() => setStorageError(""), 3000);

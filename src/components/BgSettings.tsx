@@ -97,23 +97,26 @@ export default function BgSettingsPanel({ open, onClose }: Props) {
   const init = useRef(false);
 
   useEffect(() => {
+    if (!open) return; // 只在面板打开时初始化
     if (init.current) return;
     init.current = true;
     const data = readBg();
     setSettings(data);
     applyBlur(data.blur);
-  }, []);
+  }, [open]);
 
   const first = useRef(true);
   useEffect(() => {
+    if (!open) return; // 只在面板打开时应用更改
     if (first.current) { first.current = false; return; }
     applyBlur(settings.blur);
+    console.log('Applying blur from panel:', settings.blur); // 调试日志
     if (!saveSafe(settings)) {
       setStorageError("存储空间不足，已自动清理旧图片");
       setTimeout(() => setStorageError(""), 3000);
     } else setStorageError("");
     requestAnimationFrame(() => window.dispatchEvent(new CustomEvent(BG_UPDATE_EVENT)));
-  }, [settings]);
+  }, [settings, open]);
 
   const update = (partial: Partial<BgSettingsData>) =>
     setSettings((prev) => ({ ...prev, ...partial }));

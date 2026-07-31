@@ -248,7 +248,7 @@ export default function MusicPage() {
                   </AnimatePresence>
                   <button
                     onClick={() => setShowVolumeSlider(!showVolumeSlider)}
-                    onDoubleClick={() => setIsMuted(!isMuted)}
+                    onDoubleClick={toggleMute}
                     className="p-2 text-slate-400 hover:text-purple-400 transition"
                   >
                     {isMuted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}

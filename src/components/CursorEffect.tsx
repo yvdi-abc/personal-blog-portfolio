@@ -1,13 +1,11 @@
 "use client";
 import { useEffect, useRef, useCallback } from "react";
-import { useEffectToggle } from './useEffectToggle';
 
 export default function CursorEffect() {
   const ringRef = useRef<HTMLDivElement>(null);
   const mouse = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
   const rAF = useRef(0);
-  const enabled = useEffectToggle('cursor');
 
   const updateRing = useCallback(() => {
     ring.current.x += (mouse.current.x - ring.current.x) * 0.15;
@@ -20,7 +18,6 @@ export default function CursorEffect() {
   }, []);
 
   useEffect(() => {
-    if (!enabled) return;
     if (window.matchMedia("(pointer:coarse)").matches) return;
     document.documentElement.style.cursor = "none";
 

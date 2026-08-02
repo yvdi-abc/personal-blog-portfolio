@@ -14,7 +14,7 @@ export default function RainEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const enabled = useEffectToggle('rain');
   const raindropsRef = useRef<Raindrop[]>([]);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (!enabled) {

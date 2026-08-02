@@ -1,2 +1,6 @@
+public/gallery/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+public/gallery/**/*.png filter=lfs diff=lfs merge=lfs -text
+public/images/*.jpg filter=lfs diff=lfs merge=lfs -text
+public/images/*.png filter=lfs diff=lfs merge=lfs -text
 *.jpg !text !filter !merge !diff
 *.png !text !filter !merge !diff

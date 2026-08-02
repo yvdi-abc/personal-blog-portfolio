@@ -48,9 +48,11 @@ export const friendsData = [
     "themeColor": "#3178C6"
   },
   {
+    "id": 7,
     "name": "原神",
-    "link": "https://www.yuanshen.com",
+    "url": "https://www.yuanshen.com",
     "avatar": "https://ts3.tc.mm.bing.net/th/id/OIP-C.sjUpOqaNSr-r6Ftk_criHgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
-    "description": "原神牛逼"
+    "description": "原神牛逼",
+    "themeColor": "#FFD700"
   }
 ];

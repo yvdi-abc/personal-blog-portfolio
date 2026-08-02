@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "framer-motion": "^12.0.0",
+    "gitalk": "^1.8.0",
     "gray-matter": "^4.0.3",
     "highlight.js": "^11.11.1",
     "katex": "^0.16.9",

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useTheme } from './ThemeProvider';
+import { useEffectToggle } from './useEffectToggle';
 
 interface WildBlade {
   id: number;
@@ -16,8 +17,14 @@ interface WildBlade {
 export default function WindyGrass() {
   const [blades, setBlades] = useState<WildBlade[]>([]);
   const { isDark } = useTheme();
+  const enabled = useEffectToggle('grass');
 
   useEffect(() => {
+    if (!enabled) {
+      setBlades([]);
+      return;
+    }
+
     const generated: WildBlade[] = Array.from({ length: 150 }).map((_, i) => ({
       id: i,
       height: 30 + Math.random() * 50,
@@ -29,7 +36,7 @@ export default function WindyGrass() {
       isLeftCurve: Math.random() > 0.5
     }));
     setBlades(generated);
-  }, []);
+  }, [enabled]);
 
   return (
     <div className="fixed bottom-0 left-0 w-full h-32 pointer-events-none z-10 overflow-hidden transition-colors duration-1000">

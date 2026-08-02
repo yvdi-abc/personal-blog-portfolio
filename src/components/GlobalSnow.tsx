@@ -1,48 +1,39 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { useEffectToggle } from './useEffectToggle';
 
 export default function GlobalSnow() {
-  const [isWinter, setIsWinter] = useState(false);
+  const enabled = useEffectToggle('snow');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-
-    const checkWinter = () => {
-      const isActive = document.body.classList.contains("winter-mode") || localStorage.getItem("winter-mode") === "true";
-      setIsWinter(isActive);
-      if (isActive) document.body.classList.add("winter-mode");
-    };
-
-    checkWinter();
-
-    // 监控 body 类名变化
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === "class") {
-          setIsWinter(document.body.classList.contains("winter-mode"));
-        }
-      });
-    });
-
-    observer.observe(document.body, { attributes: true });
-    return () => observer.disconnect();
   }, []);
 
   const snowParticles = useMemo(() => {
-    const types = ["❄", "❅", "❆"];
-    return Array.from({ length: 40 }).map(() => ({
-      char: types[Math.floor(Math.random() * types.length)],
-      size: Math.random() * 15 + 10,
-      left: Math.random() * 100,
-      duration: Math.random() * 6 + 4,
-      delay: Math.random() * 5,
-      opacity: Math.random() * 0.5 + 0.3,
-    }));
+    const types = ["❄", "❅", "❆", "✦", "✧"];
+    return Array.from({ length: 50 }).map(() => {
+      const size = Math.random() * 18 + 8;
+      const duration = Math.random() * 8 + 5; // 5-13秒
+      const delay = Math.random() * 8;
+      const swayAmount = Math.random() * 100 - 50; // 左右摆动幅度
+
+      return {
+        char: types[Math.floor(Math.random() * types.length)],
+        size,
+        left: Math.random() * 100,
+        duration,
+        delay,
+        opacity: Math.random() * 0.6 + 0.3, // 0.3-0.9
+        swayAmount,
+        blur: Math.random() * 2, // 景深模糊
+        rotate: 360 + Math.random() * 360,
+      };
+    });
   }, []);
 
-  if (!mounted || !isWinter) return null;
+  if (!mounted || !enabled) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[190] overflow-hidden">
@@ -56,11 +47,12 @@ export default function GlobalSnow() {
           className="absolute text-white select-none pointer-events-none"
           style={{
             fontSize: p.size,
-            left: `${p.left}vw`,
-            top: "-20px",
+            left: `${p.left}%`,
+            top: "-30px",
             opacity: p.opacity,
-            animation: `snowDrop ${p.duration}s linear ${p.delay}s infinite`,
-            filter: "drop-shadow(0 0 2px rgba(255,255,255,0.8))",
+            animation: `snowDrop${i} ${p.duration}s linear ${p.delay}s infinite`,
+            filter: `drop-shadow(0 0 3px rgba(255,255,255,0.9)) blur(${p.blur}px)`,
+            textShadow: "0 0 5px rgba(255,255,255,0.8)",
           }}
         >
           {p.char}
@@ -68,10 +60,25 @@ export default function GlobalSnow() {
       ))}
 
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes snowDrop {
-          0% { transform: translateY(0) rotate(0deg); }
-          100% { transform: translateY(105vh) rotate(360deg); }
-        }
+        ${snowParticles.map((p, i) => `
+          @keyframes snowDrop${i} {
+            0% {
+              transform: translateY(0) translateX(0) rotate(0deg) scale(0.5);
+              opacity: 0;
+            }
+            10% {
+              opacity: ${p.opacity};
+              transform: scale(1);
+            }
+            90% {
+              opacity: ${p.opacity};
+            }
+            100% {
+              transform: translateY(105vh) translateX(${p.swayAmount}px) rotate(${p.rotate}deg) scale(0.8);
+              opacity: 0;
+            }
+          }
+        `).join('\n')}
       `}} />
     </div>
   );

@@ -1,15 +1,31 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import siteConfig from "@/siteConfig";
 
-const shapes = ["●", "■", "▲", "◆", "⬟", "◉"];
+const shapes = ["●", "■", "▲", "◆", "⬟", "◉", "★", "◇"];
 
 export default function SplashScreen() {
   const [visible, setVisible] = useState(true);
   const [exiting, setExiting] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // 使用 useMemo 确保粒子配置在客户端生成后保持一致
+  const particles = useMemo(() => {
+    return Array.from({ length: 20 }).map(() => ({
+      shape: shapes[Math.floor(Math.random() * shapes.length)],
+      fontSize: 16 + Math.random() * 40,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      duration: 4 + Math.random() * 3,
+      delay: Math.random() * 2,
+      maxOpacity: 0.2 + Math.random() * 0.3,
+      yOffset: -50 - Math.random() * 100,
+    }));
+  }, []);
 
   useEffect(() => {
+    setMounted(true);
     try { if (sessionStorage.getItem("splash-seen") === "true") setVisible(false); } catch {}
   }, []);
 
@@ -35,22 +51,46 @@ export default function SplashScreen() {
           style={{ background: "linear-gradient(135deg, #0c0c14 0%, #14142a 50%, #0c0c14 100%)" }}
           onClick={handleEnter}
         >
-          {shapes.map((s, i) => (
+          {/* 背景粒子 - 增加数量和随机性 */}
+          {mounted && particles.map((particle, i) => (
             <motion.div key={i}
               className="absolute text-teal-500/20 dark:text-teal-400/15 font-bold select-none pointer-events-none"
-              style={{ fontSize: 20 + i * 12, left: `${10 + i * 12}%`, top: `${15 + i * 10}%` }}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: [0.12, 0.3, 0.12], scale: [1, 1.2, 1], x: [0, Math.random() * 60 - 30], y: [0, Math.random() * 60 - 30] }}
-              transition={{ duration: 3 + i * 0.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
-            >{s}</motion.div>
+              style={{
+                fontSize: particle.fontSize,
+                left: `${particle.left}%`,
+                top: `${particle.top}%`
+              }}
+              initial={{ opacity: 0, scale: 0, rotate: 0 }}
+              animate={{
+                opacity: [0, particle.maxOpacity, 0],
+                scale: [0.5, 1 + (particle.fontSize / 80), 0.5],
+                rotate: [0, 360],
+                y: [0, particle.yOffset]
+              }}
+              transition={{
+                duration: particle.duration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: particle.delay
+              }}
+            >{particle.shape}</motion.div>
           ))}
 
-          <motion.div className="absolute w-72 h-72 rounded-full border border-teal-500/10 pointer-events-none"
-            animate={{ scale: [1, 1.08, 1], rotate: [0, 360] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }} />
-          <motion.div className="absolute w-56 h-56 rounded-full border border-cyan-500/10 pointer-events-none"
-            animate={{ scale: [1, 1.12, 1], rotate: [360, 0] }}
+          {/* 旋转光环 - 增加层次 */}
+          <motion.div className="absolute w-96 h-96 rounded-full border border-teal-500/20 pointer-events-none"
+            animate={{ scale: [1, 1.1, 1], rotate: [0, 360], opacity: [0.3, 0.6, 0.3] }}
             transition={{ duration: 15, repeat: Infinity, ease: "linear" }} />
+          <motion.div className="absolute w-72 h-72 rounded-full border border-cyan-500/15 pointer-events-none"
+            animate={{ scale: [1, 1.08, 1], rotate: [360, 0], opacity: [0.2, 0.5, 0.2] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }} />
+          <motion.div className="absolute w-56 h-56 rounded-full border border-teal-400/10 pointer-events-none"
+            animate={{ scale: [1, 1.12, 1], rotate: [0, -360], opacity: [0.15, 0.4, 0.15] }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }} />
+
+          {/* 脉冲光晕 */}
+          <motion.div className="absolute w-64 h-64 rounded-full bg-teal-500/5 blur-3xl pointer-events-none"
+            animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
 
           <div className="relative z-10 text-center px-6 pointer-events-none">
             <motion.div className="mb-6">
@@ -60,22 +100,25 @@ export default function SplashScreen() {
                   initial={{ opacity: 0, y: -80, rotateZ: -30, scale: 0.5 }}
                   animate={{ opacity: 1, y: 0, rotateZ: 0, scale: 1 }}
                   transition={{ delay: 0.15 + i * 0.06, type: "spring", damping: 7, stiffness: 90, mass: 0.5 }}
-                  style={{ color: ch === "." ? "#14b8a6" : undefined }}
-                >{ch === " " ? " " : ch}</motion.span>
+                  style={{
+                    color: ch === "." ? "#14b8a6" : undefined,
+                    textShadow: ch === "." ? "0 0 20px rgba(20, 184, 166, 0.5)" : "0 0 40px rgba(255, 255, 255, 0.1)"
+                  }}
+                >{ch === " " ? " " : ch}</motion.span>
               ))}
             </motion.div>
 
             <motion.p initial={{ opacity: 0, scale: 0.3 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.8, type: "spring", damping: 10, stiffness: 80 }}
-              className="text-lg md:text-xl text-teal-400/70 font-light tracking-wider mb-12"
+              className="text-lg md:text-xl text-teal-400/80 font-light tracking-wider mb-12"
             >{siteConfig.bio}</motion.p>
 
             <motion.button onClick={(e) => { e.stopPropagation(); handleEnter(); }}
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2, type: "spring", damping: 10, stiffness: 80 }}
-              whileHover={{ scale: 1.06 }}
+              whileHover={{ scale: 1.06, boxShadow: "0 0 30px rgba(20, 184, 166, 0.3)" }}
               whileTap={{ scale: 0.88 }}
               className="relative px-10 py-4 rounded-2xl bg-white/5 backdrop-blur-md border border-teal-500/30 text-teal-300 font-bold text-sm tracking-widest uppercase overflow-hidden group pointer-events-auto"
             >
@@ -92,7 +135,7 @@ export default function SplashScreen() {
           </div>
 
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2, duration: 1 }}
-            className="absolute bottom-8 text-xs text-white/15 tracking-widest pointer-events-none"
+            className="absolute bottom-8 text-xs text-white/20 tracking-widest pointer-events-none"
           >click anywhere to explore</motion.p>
         </motion.div>
       )}
@@ -100,7 +143,7 @@ export default function SplashScreen() {
       {exiting && (
         <motion.div initial={{ scaleY: 0 }} animate={{ scaleY: 1, originY: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed inset-0 "
+          className="fixed inset-0"
           style={{ background: "linear-gradient(180deg, #0c0c14, #14b8a6, #0c0c14)" }}
         >
           <motion.div initial={{ opacity: 1 }} animate={{ opacity: 0 }} transition={{ delay: 0.3, duration: 0.4 }}
@@ -108,6 +151,7 @@ export default function SplashScreen() {
             <motion.span className="text-4xl text-white font-black"
               animate={{ scale: [1, 1.5, 0], rotate: [0, 180, 360] }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
+              style={{ textShadow: "0 0 30px rgba(20, 184, 166, 0.8)" }}
             >✦</motion.span>
           </motion.div>
         </motion.div>

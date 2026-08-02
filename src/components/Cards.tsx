@@ -27,19 +27,13 @@ export function BlogCard({ title, desc, date, tag, slug, index = 0 }: {
   );
 }
 
-export function ProjectCard({ name, desc, tags, icon, index = 0 }: {
-  name: string; desc: string; tags: string[]; icon: string; index?: number;
+export function ProjectCard({ name, desc, tags, icon, link, index = 0 }: {
+  name: string; desc: string; tags: string[]; icon: string; link?: string; index?: number;
 }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.08, type: "spring", damping: 18, stiffness: 100 }}
-      className="glass rounded-2xl p-6 glass-hover group cursor-pointer"
-    >
+  const content = (
+    <>
       <div className="text-3xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">{icon}</div>
-      <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2">{name}</h3>
+      <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2 group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">{name}</h3>
       <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{desc}</p>
       <div className="flex flex-wrap gap-2">
         {tags.map((t) => (
@@ -48,6 +42,30 @@ export function ProjectCard({ name, desc, tags, icon, index = 0 }: {
           </span>
         ))}
       </div>
+    </>
+  );
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.08, type: "spring", damping: 18, stiffness: 100 }}
+    >
+      {link ? (
+        <a
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block glass rounded-2xl p-6 glass-hover group cursor-pointer"
+        >
+          {content}
+        </a>
+      ) : (
+        <div className="glass rounded-2xl p-6 glass-hover group cursor-pointer">
+          {content}
+        </div>
+      )}
     </motion.div>
   );
 }

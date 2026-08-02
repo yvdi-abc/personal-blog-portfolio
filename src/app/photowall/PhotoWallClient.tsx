@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import { albums, Album } from '@/data/albums';
 
 export default function PhotoWallClient() {
@@ -78,7 +79,16 @@ export default function PhotoWallClient() {
                         onClick={() => setSelectedImage(photo)}
                         className="break-inside-avoid relative group rounded-2xl overflow-hidden cursor-zoom-in shadow-lg bg-white/20 dark:bg-slate-800/20 border border-white/30 dark:border-white/10 transition-shadow duration-300 hover:shadow-2xl"
                       >
-                        <img src={photo.url} alt={photo.caption} className="w-full h-auto object-cover" loading="lazy" decoding="async" />
+                        <div className="relative w-full aspect-[4/3]">
+                          <Image
+                            src={photo.url}
+                            alt={photo.caption || '照片'}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            className="object-cover"
+                            quality={70}
+                          />
+                        </div>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
                           <span className="text-indigo-300 font-black text-[10px] tracking-widest uppercase mb-1 drop-shadow-md">{photo.albumName}</span>
                           <p className="text-white font-medium text-sm drop-shadow-md">{photo.caption}</p>
@@ -106,14 +116,40 @@ export default function PhotoWallClient() {
                     <div className="relative w-[85%] aspect-[4/3] mb-8">
                       {/* 后面两张照片堆叠效果 */}
                       <div className="absolute inset-0 bg-slate-300 dark:bg-slate-700 rounded-[4px] shadow-md transform rotate-6 translate-x-4 translate-y-2 group-hover:rotate-12 group-hover:translate-x-8 transition-all duration-500 border-[6px] border-white dark:border-slate-200 overflow-hidden opacity-60">
-                         {album.photos[2] && <img src={album.photos[2].url} className="w-full h-full object-cover grayscale blur-[2px]" alt="" />}
+                         {album.photos[2] && (
+                           <Image
+                             src={album.photos[2].url}
+                             alt=""
+                             fill
+                             sizes="400px"
+                             className="object-cover grayscale blur-[2px]"
+                             quality={60}
+                           />
+                         )}
                       </div>
                       <div className="absolute inset-0 bg-slate-200 dark:bg-slate-600 rounded-[4px] shadow-lg transform -rotate-3 -translate-x-2 -translate-y-1 group-hover:-rotate-6 group-hover:-translate-x-6 transition-all duration-500 border-[6px] border-white dark:border-slate-200 overflow-hidden opacity-80 z-10">
-                         {album.photos[1] && <img src={album.photos[1].url} className="w-full h-full object-cover grayscale-[50%]" alt="" />}
+                         {album.photos[1] && (
+                           <Image
+                             src={album.photos[1].url}
+                             alt=""
+                             fill
+                             sizes="400px"
+                             className="object-cover grayscale-[50%]"
+                             quality={65}
+                           />
+                         )}
                       </div>
                       {/* 前面的封面照片 */}
                       <div className="absolute inset-0 bg-white dark:bg-slate-200 rounded-[4px] shadow-2xl border-[6px] border-white dark:border-slate-200 overflow-hidden z-20 transform group-hover:-translate-y-2 transition-transform duration-500 relative">
-                        <img src={album.cover} alt={album.title} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                        <Image
+                          src={album.cover}
+                          alt={album.title}
+                          fill
+                          sizes="400px"
+                          className="object-cover"
+                          quality={75}
+                          priority={false}
+                        />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-5">
                           <span className="text-white font-bold text-lg drop-shadow-md">{album.photos.length} 张照片</span>
                           <span className="text-indigo-300 font-medium text-xs mt-1 drop-shadow-md">Click to Open</span>
@@ -174,7 +210,16 @@ export default function PhotoWallClient() {
                   onClick={() => setSelectedImage(photo)}
                   className="break-inside-avoid relative group rounded-2xl overflow-hidden cursor-zoom-in shadow-lg bg-white/20 dark:bg-slate-800/20 border border-white/30 dark:border-white/10 transition-shadow duration-300 hover:shadow-2xl"
                 >
-                  <img src={photo.url} alt={photo.caption || '照片'} className="w-full h-auto object-cover" loading="lazy" decoding="async" />
+                  <div className="relative w-full aspect-[4/3]">
+                    <Image
+                      src={photo.url}
+                      alt={photo.caption || '照片'}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      className="object-cover"
+                      quality={70}
+                    />
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
                     {photo.caption && (
                       <p className="text-white font-medium text-sm drop-shadow-md">

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Search } from 'lucide-react';
 
 interface Friend {
   name: string;
@@ -14,6 +14,15 @@ export default function FriendsManager() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<number | 'new' | null>(null);
   const [editData, setEditData] = useState<Friend | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // 过滤友链
+  const filteredFriends = friends.filter(friend => {
+    const matchSearch = friend.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                       friend.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                       friend.link.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchSearch;
+  });
 
   useEffect(() => {
     fetchFriends();
@@ -202,7 +211,7 @@ export default function FriendsManager() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-          友链列表 ({friends.length})
+          友链列表 ({filteredFriends.length}/{friends.length})
         </h2>
         <button
           onClick={handleNew}
@@ -212,52 +221,72 @@ export default function FriendsManager() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {friends.map((friend, index) => (
-          <div
-            key={index}
-            className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:shadow-md transition-shadow"
-          >
-            <div className="flex items-start gap-4 mb-3">
-              <img
-                src={friend.avatar}
-                alt={friend.name}
-                className="w-12 h-12 rounded-full object-cover flex-shrink-0"
-              />
-              <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-slate-900 dark:text-white mb-1 truncate">
-                  {friend.name}
-                </h3>
-                <a
-                  href={friend.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-teal-600 dark:text-teal-400 hover:underline truncate block"
+      {/* 搜索 */}
+      <div className="mb-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <input
+            type="text"
+            placeholder="搜索友链名称、描述或链接..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+          />
+        </div>
+      </div>
+
+      {filteredFriends.length === 0 ? (
+        <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+          {friends.length === 0 ? '暂无友链，点击"新建友链"开始添加' : '没有找到匹配的友链'}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {filteredFriends.map((friend, index) => (
+            <div
+              key={index}
+              className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-start gap-4 mb-3">
+                <img
+                  src={friend.avatar}
+                  alt={friend.name}
+                  className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-slate-900 dark:text-white mb-1 truncate">
+                    {friend.name}
+                  </h3>
+                  <a
+                    href={friend.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-teal-600 dark:text-teal-400 hover:underline truncate block"
+                  >
+                    {friend.link}
+                  </a>
+                </div>
+              </div>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
+                {friend.description}
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleEdit(friends.indexOf(friend))}
+                  className="flex-1 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center justify-center gap-2 text-sm font-bold"
                 >
-                  {friend.link}
-                </a>
+                  <Edit size={14} /> 编辑
+                </button>
+                <button
+                  onClick={() => handleDelete(friends.indexOf(friend))}
+                  className="flex-1 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center justify-center gap-2 text-sm font-bold"
+                >
+                  <Trash2 size={14} /> 删除
+                </button>
               </div>
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
-              {friend.description}
-            </p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => handleEdit(index)}
-                className="flex-1 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center justify-center gap-2 text-sm font-bold"
-              >
-                <Edit size={14} /> 编辑
-              </button>
-              <button
-                onClick={() => handleDelete(index)}
-                className="flex-1 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center justify-center gap-2 text-sm font-bold"
-              >
-                <Trash2 size={14} /> 删除
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

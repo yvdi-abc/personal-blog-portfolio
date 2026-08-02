@@ -17,8 +17,6 @@ export interface Project {
 }
 
 export const projectsData: Project[] = [
-  { name: 'CloudViz', desc: '基于 D3.js + WebSocket 的实时监控看板，支持自定义布局与毫秒级数据刷新。', tags: ['React', 'D3.js', 'WebSocket'], icon: '📊' },
-  { name: 'BlogEngine', desc: '轻量级静态博客生成器，支持 Markdown 编写、自定义主题、全文搜索与 RSS。', tags: ['Node.js', 'Markdown', 'CLI'], icon: '✍️' },
-  { name: 'EcoTrack', desc: '个人碳足迹追踪 App，通过消费数据计算碳排放，提供可视化报告与减排建议。', tags: ['React Native', 'Firebase', 'Charts'], icon: '🌱' },
-  { name: 'UI·KIT', desc: '60+ 基础组件的设计系统，支持 Figma 与 Storybook 双向同步，统一 Token 体系。', tags: ['Figma', 'Storybook', 'CSS'], icon: '🎨' },
+  { name: 'AstrBot 人格切换插件', desc: 'AstrBot 的人格切换插件，支持多个预设人格快速切换，让 AI 助手拥有不同的对话风格和性格特征。', tags: ['Python', 'AstrBot', 'Plugin'], icon: '🎭', link: 'https://github.com/yvdi-abc/astrbot_plugin_persona_switch' },
+  { name: '个人博客作品集', desc: '基于 Next.js 15 + TypeScript 构建的现代化个人博客网站，支持博客、碎语、项目展示、友链等功能，集成 Gitalk 评论、AI 助手、音乐播放器等特色功能。', tags: ['Next.js', 'TypeScript', 'React'], icon: '🌐', link: 'https://github.com/yvdi-abc/personal-blog-portfolio' },
 ];

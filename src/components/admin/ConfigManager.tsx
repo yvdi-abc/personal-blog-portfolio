@@ -102,7 +102,7 @@ export default function ConfigManager() {
             value={config.title}
             onChange={(e) => setConfig({ ...config, title: e.target.value })}
             className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
-            placeholder="Yuxi Wang · 全栈开发"
+            placeholder="Yvdiの小窝"
           />
         </div>
 
@@ -115,7 +115,7 @@ export default function ConfigManager() {
             value={config.authorName}
             onChange={(e) => setConfig({ ...config, authorName: e.target.value })}
             className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
-            placeholder="Yuxi Wang"
+            placeholder="Yvdi"
           />
         </div>
 

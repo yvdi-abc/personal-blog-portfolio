@@ -3,13 +3,20 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CalculatorTool from './toolbox/CalculatorTool';
+import TomatoClock from './toolbox/TomatoClock';
+import QuickNotes from './toolbox/QuickNotes';
+import UnitConverter from './toolbox/UnitConverter';
+import ColorPicker from './toolbox/ColorPicker';
+import DanmakuSender from './toolbox/DanmakuSender';
 
-// 工具注册表 - 未来可以轻松扩展
+// 工具注册表
 const TOOL_REGISTRY = [
   { id: 'calc', name: '计算器', icon: '🧮', component: <CalculatorTool /> },
-  // 预留扩展位置
-  // { id: 'tomato', name: '番茄钟', icon: '🍅', component: <TomatoClock /> },
-  // { id: 'notes', name: '便签', icon: '📝', component: <QuickNotes /> },
+  { id: 'tomato', name: '番茄钟', icon: '🍅', component: <TomatoClock /> },
+  { id: 'notes', name: '便签', icon: '📝', component: <QuickNotes /> },
+  { id: 'converter', name: '单位转换', icon: '🔄', component: <UnitConverter /> },
+  { id: 'color', name: '颜色', icon: '🎨', component: <ColorPicker /> },
+  { id: 'danmaku', name: '弹幕', icon: '💬', component: <DanmakuSender /> },
 ];
 
 export default function GlobalToolbox() {

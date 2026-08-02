@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Search, Calendar, Tag } from 'lucide-react';
+import MarkdownEditor from './MarkdownEditor';
 
 interface Post {
   slug: string;
@@ -17,6 +18,19 @@ export default function PostsManager() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<string | null>(null);
   const [editData, setEditData] = useState<Post | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterTag, setFilterTag] = useState('');
+
+  // 获取所有标签
+  const allTags = Array.from(new Set(posts.flatMap(p => p.tags)));
+
+  // 过滤文章
+  const filteredPosts = posts.filter(post => {
+    const matchSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                       post.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchTag = !filterTag || post.tags.includes(filterTag);
+    return matchSearch && matchTag;
+  });
 
   useEffect(() => {
     fetchPosts();
@@ -211,11 +225,10 @@ export default function PostsManager() {
             <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
               内容 (Markdown)
             </label>
-            <textarea
+            <MarkdownEditor
               value={editData.content}
-              onChange={(e) => setEditData({ ...editData, content: e.target.value })}
-              className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono text-sm"
-              rows={20}
+              onChange={(content) => setEditData({ ...editData, content })}
+              height="600px"
             />
           </div>
         </div>
@@ -228,7 +241,7 @@ export default function PostsManager() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-          文章列表 ({posts.length})
+          文章列表 ({filteredPosts.length}/{posts.length})
         </h2>
         <button
           onClick={handleNew}
@@ -238,46 +251,83 @@ export default function PostsManager() {
         </button>
       </div>
 
-      <div className="space-y-3">
-        {posts.map((post) => (
-          <div
-            key={post.slug}
-            className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-between hover:shadow-md transition-shadow"
+      {/* 搜索和筛选 */}
+      <div className="mb-6 flex flex-col md:flex-row gap-3">
+        <div className="flex-1 relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <input
+            type="text"
+            placeholder="搜索文章标题或描述..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+          />
+        </div>
+
+        <div className="w-full md:w-48">
+          <select
+            value={filterTag}
+            onChange={(e) => setFilterTag(e.target.value)}
+            className="w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
           >
-            <div className="flex-1">
-              <h3 className="font-bold text-slate-900 dark:text-white mb-1">
-                {post.title}
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-                {post.description}
-              </p>
-              <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-500">
-                <span>📅 {post.date}</span>
-                <span>🔗 {post.slug}</span>
-                {post.tags.length > 0 && (
-                  <span>🏷️ {post.tags.join(', ')}</span>
-                )}
+            <option value="">所有标签</option>
+            {allTags.map(tag => (
+              <option key={tag} value={tag}>{tag}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {filteredPosts.length === 0 ? (
+        <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+          {posts.length === 0 ? '暂无文章，点击"新建文章"开始创作' : '没有找到匹配的文章'}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {filteredPosts.map((post) => (
+            <div
+              key={post.slug}
+              className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-between hover:shadow-md transition-shadow"
+            >
+              <div className="flex-1">
+                <h3 className="font-bold text-slate-900 dark:text-white mb-1">
+                  {post.title}
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
+                  {post.description}
+                </p>
+                <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-500">
+                  <span className="flex items-center gap-1">
+                    <Calendar size={12} /> {post.date}
+                  </span>
+                  <span>🔗 {post.slug}</span>
+                  {post.tags.length > 0 && (
+                    <span className="flex items-center gap-1">
+                      <Tag size={12} /> {post.tags.join(', ')}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleEdit(post)}
+                  className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                  title="编辑"
+                >
+                  <Edit size={16} />
+                </button>
+                <button
+                  onClick={() => handleDelete(post.slug)}
+                  className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                  title="删除"
+                >
+                  <Trash2 size={16} />
+                </button>
               </div>
             </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => handleEdit(post)}
-                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                title="编辑"
-              >
-                <Edit size={16} />
-              </button>
-              <button
-                onClick={() => handleDelete(post.slug)}
-                className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                title="删除"
-              >
-                <Trash2 size={16} />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

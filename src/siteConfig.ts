@@ -3,7 +3,6 @@ const siteConfig = {
   authorName: "Yvdi",
   navTitle: "Yvdiの小窝",
   navSuffix: ".",
-  navAfter: "Wang",
   bio: "在校大学生|业余开发者",
   avatarUrl: "/avatar.jpg",
   faviconUrl: "/favicon.ico",
@@ -40,10 +39,66 @@ const siteConfig = {
 
   social: {
     github: "https://github.com/yvdi-abc",
+    gitee: "",
+    google: "",
     email: "3625607718@qq.com",
+    qq: "",
+    wechat: "",
   },
 
-  buildDate: "2026-03-23T00:00:00",
+  // 碎语（Chatter）配置
+  chatterTitle: "碎语广场",
+  chatterDescription: "记录生活的点点滴滴",
+
+  // 全局背景弹幕配置
+  danmakuList: [
+    "在干嘛呢？",
+    "欢迎来到我的小站~",
+    "今天学习了吗？",
+    "代码写得怎么样了？",
+    "前方高能反应！",
+    "摸鱼中...",
+    "又在调 bug 吗？",
+    "Tailwind CSS 真香",
+    "Next.js 真好用",
+    "React 19 来了！",
+  ],
+
+  // Gitalk 评论系统配置
+  gitalkConfig: {
+    clientID: "",  // GitHub OAuth App Client ID
+    clientSecret: "",  // GitHub OAuth App Client Secret
+    repo: "",  // 存储评论的 GitHub 仓库名
+    owner: "",  // GitHub 用户名
+    admin: [""],  // 管理员用户名数组
+  },
+
+  // AI 助手配置（可选：Gemini、OpenAI 等）
+  geminiConfig: {
+    modelId: "gemini-2.0-flash-exp",  // Gemini 模型 ID
+    systemPrompt: `你是一个友好、聪明、有点幽默的 AI 助手。
+你的主人是一个喜欢编程的学生开发者。
+你说话的特点是：
+1. 简短明了，每次最多两三句话
+2. 偶尔会开玩笑或使用表情符号
+3. 回复字数最多不超过 150 字
+4. 乐于帮助解答技术问题`,
+    maxOutputTokens: 200,
+    temperature: 0.85,
+  },
+
+  // 友链申请格式
+  friendLinkApplyFormat: `名称：Yvdiの小窝
+简介：在校大学生|业余开发者
+链接：https://your-domain.com
+头像：https://your-avatar-url.jpg`,
+
+  // 统计数据
+  counts: {
+    photos: 0,  // 照片墙数量
+  },
+
+  buildDate: "2026-07-30T00:00:00",  // 建站日期
   footerBadges: [
     {
       name: "Next.js 15",
@@ -64,7 +119,10 @@ const siteConfig = {
   icpConfig: {
     name: "萌ICP备 20260240号",
     link: "https://icp.gov.moe/?keyword=20260240"
-  }
+  },
+
+  // 功能开关
+  enableLevelSystem: false,  // 是否启用等级系统
 };
 
 export default siteConfig;

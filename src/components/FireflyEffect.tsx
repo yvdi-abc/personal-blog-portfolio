@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { useEffectToggle } from './useEffectToggle';
 
 interface Firefly {
   id: number;
@@ -14,8 +15,14 @@ interface Firefly {
 export default function FireflyEffect() {
   const [fireflies, setFireflies] = useState<Firefly[]>([]);
   const [isDark, setIsDark] = useState(false);
+  const enabled = useEffectToggle('firefly');
 
   useEffect(() => {
+    if (!enabled) {
+      setFireflies([]);
+      return;
+    }
+
     // 检测当前主题
     const checkTheme = () => {
       const dark = document.documentElement.classList.contains('dark');
@@ -32,11 +39,11 @@ export default function FireflyEffect() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [enabled]);
 
   useEffect(() => {
-    // 只在暗色模式显示
-    if (!isDark) {
+    // 只在暗色模式且开启时显示
+    if (!isDark || !enabled) {
       setFireflies([]);
       return;
     }
@@ -54,7 +61,7 @@ export default function FireflyEffect() {
     }));
 
     setFireflies(newFireflies);
-  }, [isDark]);
+  }, [isDark, enabled]);
 
   if (!isDark || fireflies.length === 0) return null;
 

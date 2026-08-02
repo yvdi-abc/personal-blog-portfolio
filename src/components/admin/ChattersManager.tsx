@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Save, X } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Search } from 'lucide-react';
 
 interface Chatter {
   slug: string;
@@ -17,6 +17,14 @@ export default function ChattersManager() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<string | 'new' | null>(null);
   const [editData, setEditData] = useState<Chatter | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // 过滤碎语
+  const filteredChatters = chatters.filter(chatter => {
+    const matchSearch = chatter.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                       chatter.content.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchSearch;
+  });
 
   useEffect(() => {
     fetchChatters();
@@ -238,7 +246,7 @@ export default function ChattersManager() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-          碎语列表 ({chatters.length})
+          碎语列表 ({filteredChatters.length}/{chatters.length})
         </h2>
         <button
           onClick={handleNew}
@@ -248,47 +256,67 @@ export default function ChattersManager() {
         </button>
       </div>
 
-      <div className="space-y-3">
-        {chatters.map((chatter) => (
-          <div
-            key={chatter.slug}
-            className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-start justify-between hover:shadow-md transition-shadow"
-          >
-            <div className="flex-1">
-              <h3 className="font-bold text-slate-900 dark:text-white mb-1">
-                {chatter.title}
-              </h3>
-              <p className="text-slate-900 dark:text-white mb-2 whitespace-pre-wrap">
-                {chatter.content}
-              </p>
-              <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-500">
-                <span>📅 {chatter.date}</span>
-                {chatter.mood && <span>💭 {chatter.mood}</span>}
-                {chatter.tags && chatter.tags.length > 0 && (
-                  <span>🏷️ {chatter.tags.join(', ')}</span>
-                )}
-                <span className="text-slate-400 dark:text-slate-600">🔗 {chatter.slug}</span>
+      {/* 搜索 */}
+      <div className="mb-6">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <input
+            type="text"
+            placeholder="搜索碎语标题或内容..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+          />
+        </div>
+      </div>
+
+      {filteredChatters.length === 0 ? (
+        <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+          {chatters.length === 0 ? '暂无碎语，点击"新建碎语"开始记录' : '没有找到匹配的碎语'}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {filteredChatters.map((chatter) => (
+            <div
+              key={chatter.slug}
+              className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-start justify-between hover:shadow-md transition-shadow"
+            >
+              <div className="flex-1">
+                <h3 className="font-bold text-slate-900 dark:text-white mb-1">
+                  {chatter.title}
+                </h3>
+                <p className="text-slate-900 dark:text-white mb-2 whitespace-pre-wrap">
+                  {chatter.content}
+                </p>
+                <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-500">
+                  <span>📅 {chatter.date}</span>
+                  {chatter.mood && <span>💭 {chatter.mood}</span>}
+                  {chatter.tags && chatter.tags.length > 0 && (
+                    <span>🏷️ {chatter.tags.join(', ')}</span>
+                  )}
+                  <span className="text-slate-400 dark:text-slate-600">🔗 {chatter.slug}</span>
+                </div>
+              </div>
+              <div className="flex gap-2 ml-4">
+                <button
+                  onClick={() => handleEdit(chatter)}
+                  className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                  title="编辑"
+                >
+                  <Edit size={16} />
+                </button>
+                <button
+                  onClick={() => handleDelete(chatter.slug)}
+                  className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                  title="删除"
+                >
+                  <Trash2 size={16} />
+                </button>
               </div>
             </div>
-            <div className="flex gap-2 ml-4">
-              <button
-                onClick={() => handleEdit(chatter)}
-                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                title="编辑"
-              >
-                <Edit size={16} />
-              </button>
-              <button
-                onClick={() => handleDelete(chatter.slug)}
-                className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                title="删除"
-              >
-                <Trash2 size={16} />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

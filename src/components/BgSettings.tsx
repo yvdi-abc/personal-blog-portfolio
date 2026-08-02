@@ -1,9 +1,16 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { useTheme } from "./ThemeProvider";
 
 const BASE = "";
 const STORAGE_KEY = "bg-settings";
-export const DEFAULT_IMAGES = ["/bg/bg1.jpg", "/bg/bg2.jpg", "/bg/bg3.jpg"].map((p) => BASE + p);
+export const DEFAULT_IMAGES = [
+  "/bg/bg1.jpg",
+  "/bg/bg2.jpg",
+  "/bg/bg3.jpg",
+  "/images/bg-funingna-1.png",
+  "/images/bg-funingna-2.jpg"
+].map((p) => BASE + p);
 
 export interface BgSettingsData {
   mode: "gradient" | "images";
@@ -14,11 +21,29 @@ export interface BgSettingsData {
   customImages: string[];
   activeDefaults: boolean[];
   activeCustom: boolean[];
+  // 特效开关
+  effects: {
+    firefly: boolean;
+    sakura: boolean;
+    grass: boolean;
+    rain: boolean;
+    snow: boolean;
+  };
+  // 主题模式
+  theme: "light" | "dark" | "system";
 }
 
 const DEFAULTS: BgSettingsData = {
   mode: "images", enabled: true, opacity: 20, interval: 6, blur: 8,
   customImages: [], activeDefaults: [true, true, true], activeCustom: [],
+  effects: {
+    firefly: true,
+    sakura: true,
+    grass: true,
+    rain: false,
+    snow: false,
+  },
+  theme: "system",
 };
 
 export function readBg(): BgSettingsData {
@@ -91,6 +116,7 @@ export default function BgSettingsPanel({ open, onClose }: Props) {
   const [settings, setSettings] = useState<BgSettingsData>(structuredClone(DEFAULTS));
   const [storageError, setStorageError] = useState("");
   const init = useRef(false);
+  const { theme: currentTheme, setTheme, resolvedTheme } = useTheme();
 
   // 只在面板打开时初始化
   useEffect(() => {
@@ -112,8 +138,13 @@ export default function BgSettingsPanel({ open, onClose }: Props) {
     requestAnimationFrame(() => window.dispatchEvent(new CustomEvent(BG_UPDATE_EVENT)));
   }, [settings]);
 
-  const update = (partial: Partial<BgSettingsData>) =>
+  const update = (partial: Partial<BgSettingsData>) => {
     setSettings((prev) => ({ ...prev, ...partial }));
+    // 如果更新了主题，同步到 ThemeProvider
+    if (partial.theme) {
+      setTheme(partial.theme);
+    }
+  };
 
   const toggleDefault = (idx: number) => {
     const arr = [...settings.activeDefaults];
@@ -216,6 +247,73 @@ export default function BgSettingsPanel({ open, onClose }: Props) {
           <input type="range" min={0} max={15} value={settings.blur}
             onChange={(e) => update({ blur: Number(e.target.value) })} className="w-full accent-teal-500" />
           <div className="flex justify-between text-xs text-slate-400 mt-1"><span>清晰</span><span>模糊</span></div>
+        </div>
+
+        {/* 主题模式 */}
+        <div className="mb-6 p-3 rounded-xl bg-white/30 dark:bg-slate-700/30">
+          <div className="text-sm font-bold text-slate-700 dark:text-slate-200 mb-3">主题模式</div>
+          <div className="flex gap-2">
+            {[
+              { value: "light" as const, label: "☀️ 日间" },
+              { value: "dark" as const, label: "🌙 夜间" },
+              { value: "system" as const, label: "💻 系统" }
+            ].map(({ value, label }) => (
+              <button key={value} onClick={() => update({ theme: value })}
+                className={`flex-1 py-2 px-2 rounded-lg text-xs font-medium transition-all ${
+                  currentTheme === value
+                    ? "bg-teal-500 text-white shadow-md"
+                    : "bg-white/20 dark:bg-slate-700/20 text-slate-700 dark:text-slate-200 hover:bg-white/30 dark:hover:bg-slate-700/40"
+                }`}>
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 特效开关 */}
+        <div className="mb-6 p-3 rounded-xl bg-white/30 dark:bg-slate-700/30">
+          <div className="text-sm font-bold text-slate-700 dark:text-slate-200 mb-3">视觉特效</div>
+          <div className="space-y-2">
+            {resolvedTheme === "dark" && (
+              <div className="flex items-center justify-between p-2 rounded-lg bg-white/20 dark:bg-slate-700/20">
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-200">🦋 流萤</span>
+                <button onClick={() => update({ effects: { ...settings.effects, firefly: !settings.effects.firefly } })}
+                  className={`w-10 h-5 rounded-full transition-colors ${settings.effects.firefly ? "bg-teal-500" : "bg-slate-400"}`}>
+                  <div className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${settings.effects.firefly ? "translate-x-5" : "translate-x-0.5"}`} />
+                </button>
+              </div>
+            )}
+            {resolvedTheme === "light" && (
+              <div className="flex items-center justify-between p-2 rounded-lg bg-white/20 dark:bg-slate-700/20">
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-200">🌸 落英</span>
+                <button onClick={() => update({ effects: { ...settings.effects, sakura: !settings.effects.sakura } })}
+                  className={`w-10 h-5 rounded-full transition-colors ${settings.effects.sakura ? "bg-teal-500" : "bg-slate-400"}`}>
+                  <div className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${settings.effects.sakura ? "translate-x-5" : "translate-x-0.5"}`} />
+                </button>
+              </div>
+            )}
+            <div className="flex items-center justify-between p-2 rounded-lg bg-white/20 dark:bg-slate-700/20">
+              <span className="text-xs font-medium text-slate-700 dark:text-slate-200">🌿 草地</span>
+              <button onClick={() => update({ effects: { ...settings.effects, grass: !settings.effects.grass } })}
+                className={`w-10 h-5 rounded-full transition-colors ${settings.effects.grass ? "bg-teal-500" : "bg-slate-400"}`}>
+                <div className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${settings.effects.grass ? "translate-x-5" : "translate-x-0.5"}`} />
+              </button>
+            </div>
+            <div className="flex items-center justify-between p-2 rounded-lg bg-white/20 dark:bg-slate-700/20">
+              <span className="text-xs font-medium text-slate-700 dark:text-slate-200">🌧️ 雨水</span>
+              <button onClick={() => update({ effects: { ...settings.effects, rain: !settings.effects.rain } })}
+                className={`w-10 h-5 rounded-full transition-colors ${settings.effects.rain ? "bg-teal-500" : "bg-slate-400"}`}>
+                <div className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${settings.effects.rain ? "translate-x-5" : "translate-x-0.5"}`} />
+              </button>
+            </div>
+            <div className="flex items-center justify-between p-2 rounded-lg bg-white/20 dark:bg-slate-700/20">
+              <span className="text-xs font-medium text-slate-700 dark:text-slate-200">❄️ 雪花</span>
+              <button onClick={() => update({ effects: { ...settings.effects, snow: !settings.effects.snow } })}
+                className={`w-10 h-5 rounded-full transition-colors ${settings.effects.snow ? "bg-teal-500" : "bg-slate-400"}`}>
+                <div className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${settings.effects.snow ? "translate-x-5" : "translate-x-0.5"}`} />
+              </button>
+            </div>
+          </div>
         </div>
 
         {settings.mode === "images" && (

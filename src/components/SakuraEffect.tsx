@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { useEffectToggle } from './useEffectToggle';
 
 interface Petal {
   id: number;
@@ -14,6 +15,7 @@ interface Petal {
 export default function SakuraEffect() {
   const [petals, setPetals] = useState<Petal[]>([]);
   const [isDark, setIsDark] = useState(true);
+  const enabled = useEffectToggle('sakura');
 
   useEffect(() => {
     const checkTheme = () => {
@@ -33,7 +35,7 @@ export default function SakuraEffect() {
   }, []);
 
   useEffect(() => {
-    if (isDark) {
+    if (isDark || !enabled) {
       setPetals([]);
       return;
     }
@@ -51,7 +53,7 @@ export default function SakuraEffect() {
     }));
 
     setPetals(newPetals);
-  }, [isDark]);
+  }, [isDark, enabled]);
 
   if (isDark || petals.length === 0) return null;
 

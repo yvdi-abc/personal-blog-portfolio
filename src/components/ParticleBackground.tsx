@@ -1,14 +1,12 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { useEffectToggle } from './useEffectToggle';
 
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const enabled = useEffectToggle('particle');
 
   useEffect(() => {
     const cv = canvasRef.current;
-    if (!cv || !enabled) return;
+    if (!cv) return;
     if (window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
 
     const ctx = cv.getContext("2d")!;

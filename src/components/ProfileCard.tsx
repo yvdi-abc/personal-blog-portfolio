@@ -72,7 +72,7 @@ export default function ProfileCard({ postCount, chatterCount, photoCount }: { p
               <CardItem
                 translateZ="60"
                 className="flex gap-2 md:gap-3 flex-wrap justify-center md:justify-end w-full md:w-auto"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e: React.MouseEvent) => e.stopPropagation()}
               >
                 {siteConfig.social?.github && <SocialBtn type="github" url={siteConfig.social.github} />}
                 {siteConfig.social?.email && <SocialBtn type="email" onClick={() => copyToClipboard(siteConfig.social.email, '邮箱')} />}

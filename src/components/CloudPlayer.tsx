@@ -131,8 +131,8 @@ export default function CloudPlayer() {
                 <CardItem
                    translateZ="50"
                    className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300 font-bold mb-3 transition-colors duration-700"
-                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                   onPointerDown={(e) => { e.stopPropagation(); }}
+                   onClick={(e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); }}
+                   onPointerDown={(e: React.PointerEvent) => { e.stopPropagation(); }}
                 >
                   <span className="w-10 text-right">{formatTime(currentTime)}</span>
                   <input

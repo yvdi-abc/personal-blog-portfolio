@@ -41,7 +41,7 @@ export function WebcamPixelGrid({
 }: WebcamPixelGridProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const [hasPermission, setHasPermission] = useState(false);
   const previousFrameRef = useRef<ImageData | null>(null);
   const elevationsRef = useRef<number[][]>([]);

@@ -1,6 +1,6 @@
 // 统一的特效开关hook
 import { useEffect, useState } from 'react';
-import { readBg, BG_UPDATE_EVENT } from './BgSettings';
+import { readBg, BG_UPDATE_EVENT } from '@/lib/bgSettings';
 
 export function useEffectToggle(effectName: 'firefly' | 'sakura' | 'grass' | 'rain' | 'snow') {
   const [enabled, setEnabled] = useState(true);

@@ -77,9 +77,9 @@ export default function CalculatorTool() {
   ];
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3" style={{ cursor: 'auto' }}>
       {/* 显示屏 */}
-      <div className="bg-slate-900/60 dark:bg-slate-950/60 rounded-xl p-4 text-right border border-slate-700/50">
+      <div className="bg-slate-900/60 dark:bg-slate-950/60 rounded-xl p-4 text-right border border-slate-700/50" style={{ cursor: 'default' }}>
         <div className="text-xs text-slate-400 font-mono h-4 truncate">
           {prevValue !== null && operation ? `${prevValue} ${operation}` : ''}
         </div>
@@ -110,6 +110,7 @@ export default function CalculatorTool() {
                   ? 'bg-indigo-500/80 hover:bg-indigo-600 text-white'
                   : 'bg-white/50 dark:bg-slate-700/50 hover:bg-white dark:hover:bg-slate-600 text-slate-800 dark:text-white'
               }`}
+              style={{ cursor: 'pointer' }}
             >
               {btn}
             </button>
@@ -121,6 +122,7 @@ export default function CalculatorTool() {
       <button
         onClick={handleEquals}
         className="h-12 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-lg font-bold text-lg transition-all active:scale-95 shadow-md"
+        style={{ cursor: 'pointer' }}
       >
         =
       </button>

@@ -6,11 +6,16 @@ import CloudPlayer from "@/components/CloudPlayer";
 import LyricBar from "@/components/LyricBar";
 import LatestPostsCarousel from "@/components/LatestPostsCarousel";
 import LatestChatterCarousel from "@/components/LatestChatterCarousel";
+import PhotoWallPreview from "@/components/PhotoWallPreview";
 import ThemeToggleBlock from "@/components/ThemeToggleBlock";
 import SiteDashboard from "@/components/SiteDashboard";
 import WeatherWidget from "@/components/WeatherWidget";
+import WebcamModeBlock from "@/components/WebcamModeBlock";
+import ProjectsBlock from "@/components/ProjectsBlock";
+import FriendsBlock from "@/components/FriendsBlock";
+import TimelineBlock from "@/components/TimelineBlock";
+import ContactBlock from "@/components/ContactBlock";
 import { projectsData } from "@/data";
-import Link from "next/link";
 
 interface Post {
   slug: string;
@@ -59,96 +64,71 @@ const POSTS_DATA: Post[] = [
   },
 ];
 
-const PHOTO_ALBUM = {
-  id: 'latest',
-  title: '照片墙',
-  description: '记录生活中的美好瞬间',
-  cover: 'https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=1200&h=600&fit=crop',
-  date: '2026-07-30'
-};
-
 export default function Home() {
   const [allPosts] = useState<Post[]>(POSTS_DATA);
   const top5Posts = allPosts.slice(0, 5);
   const chatterCount = 12;
-  const realPhotoCount = 24;
+  const realPhotoCount = 50; // 更新为实际照片数量
 
   return (
     <div className="min-h-screen relative pb-32">
       <div className="w-full max-w-6xl mx-auto mt-24 sm:mt-28 px-4 sm:px-6 lg:px-10 relative z-10">
         <SearchBar posts={allPosts} />
 
-        <div className="flex flex-col gap-6 w-full mt-6">
+        <div className="flex flex-col gap-4 w-full mt-6">
 
           {/* 第一行：个人信息 + 播放器 */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-            <div className="col-span-1 lg:col-span-7 flex flex-col">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 w-full">
+            <div className="col-span-1 lg:col-span-7">
               <ProfileCard postCount={allPosts.length} chatterCount={chatterCount} photoCount={realPhotoCount} />
             </div>
-            <div className="col-span-1 lg:col-span-5 flex flex-col">
+            <div className="col-span-1 lg:col-span-5">
               <CloudPlayer />
             </div>
           </div>
 
           {/* 歌词栏 */}
-          <div className="w-full mt-[-10px]">
+          <div className="w-full">
             <LyricBar />
           </div>
 
-          {/* 第二行：文章轮播 + 照片墙 + 说说 + 主题切换 */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-
-            {/* 左侧：文章轮播 (电脑端占4列) */}
-            <div className="col-span-1 lg:col-span-4 flex flex-col min-h-[300px]">
-              <LatestPostsCarousel posts={top5Posts} />
+          {/* 主内容区：照片墙 + 三个小组件（天气、日夜、背景）*/}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 w-full">
+            {/* 左侧：大照片墙 */}
+            <div className="col-span-1 lg:col-span-6">
+              <PhotoWallPreview />
             </div>
 
-            {/* 右侧：组合面板 (电脑端占8列) */}
-            <div className="col-span-1 lg:col-span-8 flex flex-col gap-6">
-
-              {/* 照片墙大海报 */}
-              <Link
-                href="/photos"
-                className="w-full rounded-3xl bg-white/40 dark:bg-slate-800/50 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-xl overflow-hidden transition-all duration-700 hover:scale-[1.02] relative group min-h-[200px] sm:min-h-[220px] flex-shrink-0"
-              >
-                <img
-                  src={PHOTO_ALBUM.cover}
-                  alt={PHOTO_ALBUM.title}
-                  className="w-full h-full absolute inset-0 object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
-                />
-                <div className="absolute inset-0 bg-black/30 dark:bg-black/50 group-hover:bg-black/10 transition-colors duration-500"></div>
-                <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 right-6">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2 underline decoration-pink-400">
-                    {PHOTO_ALBUM.title}
-                  </h3>
-                  <p className="text-white/90 text-sm sm:text-lg line-clamp-1">
-                    {PHOTO_ALBUM.description}
-                  </p>
-                </div>
-              </Link>
-
-              {/* 底层网格：说说轮播 + 主题切换器 + 天气 */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full flex-1">
-                <div className="sm:col-span-2 flex flex-col min-h-[200px]">
-                  <LatestChatterCarousel />
-                </div>
-                <div className="sm:col-span-1 flex flex-col gap-6">
-                  <div className="min-h-[120px]">
-                    <ThemeToggleBlock />
-                  </div>
-                  <div className="min-h-[140px]">
-                    <WeatherWidget />
-                  </div>
-                </div>
-              </div>
-
+            {/* 右侧：三个功能小组件 */}
+            <div className="col-span-1 lg:col-span-6 grid grid-cols-3 gap-4">
+              <ThemeToggleBlock />
+              <WebcamModeBlock />
+              <WeatherWidget />
             </div>
           </div>
 
-          {/* 底部数据面板 */}
-          <div className="w-full mt-4">
+          {/* 文章和说说（左）+ 四个带图小组件（右）*/}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 w-full">
+            {/* 左侧：文章和说说 */}
+            <div className="col-span-1 lg:col-span-6 grid grid-cols-2 gap-4">
+              <LatestPostsCarousel posts={top5Posts} />
+              <LatestChatterCarousel />
+            </div>
+
+            {/* 右侧：四个带图的小组件 */}
+            <div className="col-span-1 lg:col-span-6 grid grid-cols-2 gap-4">
+              <ProjectsBlock />
+              <FriendsBlock />
+              <TimelineBlock />
+              <ContactBlock />
+            </div>
+          </div>
+
+          {/* 站点仪表盘 */}
+          <div className="w-full">
             <SiteDashboard />
           </div>
+
         </div>
       </div>
     </div>

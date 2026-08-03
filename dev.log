@@ -1,0 +1,69 @@
+
+> personal-blog@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use by process 15824, using available port 3002 instead.
+   ▲ Next.js 15.5.22
+   - Local:        http://localhost:3002
+   - Network:      http://169.254.83.107:3002
+
+ ✓ Starting...
+ ✓ Ready in 2.5s
+ ○ Compiling / ...
+ ✓ Compiled / in 7.3s (1594 modules)
+ ⨯ [TypeError: Cannot convert argument to a ByteString because the character at index 214 has a value of 21338 which is greater than 255.] {
+  digest: '3665592610'
+}
+ GET / 200 in 8848ms
+ ○ Compiling /api/music ...
+ ✓ Compiled /api/music in 1574ms (1614 modules)
+ GET / 200 in 346ms
+ GET /api/music?ids=1809646618,2755332551,2155422573,2618046004,1818031620,2750140001,2014336709,2711809790,2155423468,2671812705,1375725396,3396545503,3351427829,3368687705 200 in 2138ms
+ ✓ Compiled /api/weather in 340ms (1602 modules)
+Weather API error: Error: Weather API Error
+    at GET (src\app\api\weather\route.ts:49:13)
+  47 |       });
+  48 |     } else {
+> 49 |       throw new Error('Weather API Error');
+     |             ^
+  50 |     }
+  51 |   } catch (error) {
+  52 |     console.error('Weather API error:', error);
+ GET /api/weather?lat=30.67795&lon=104.093704 200 in 714ms
+ ○ Compiling /about ...
+ ✓ Compiled /about in 4.7s (2273 modules)
+ GET /about 200 in 5510ms
+   Reload env: .env.local
+ ✓ Compiled in 3.6s (2286 modules)
+ GET /about 200 in 272ms
+ ✓ Compiled in 755ms (2199 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /about 200 in 135ms
+ GET /about 200 in 225ms
+ ✓ Compiled /api/music in 280ms (1487 modules)
+ GET /api/music?ids=1809646618,2755332551,2155422573,2618046004,1818031620,2750140001,2014336709,2711809790,2155423468,2671812705,1375725396,3396545503,3351427829,3368687705 200 in 587ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'D:\xvniCpan\personal web\.next\cache\webpack\client-development\1.pack.gz_' -> 'D:\xvniCpan\personal web\.next\cache\webpack\client-development\1.pack.gz'
+ ⨯ Error: Cannot find module './331.js'
+Require stack:
+- D:\xvniCpan\personal web\.next\server\webpack-runtime.js
+- D:\xvniCpan\personal web\.next\server\app\api\music\route.js
+- D:\xvniCpan\personal web\node_modules\next\dist\server\require.js
+- D:\xvniCpan\personal web\node_modules\next\dist\server\load-components.js
+- D:\xvniCpan\personal web\node_modules\next\dist\build\utils.js
+- D:\xvniCpan\personal web\node_modules\next\dist\build\swc\options.js
+- D:\xvniCpan\personal web\node_modules\next\dist\build\swc\index.js
+- D:\xvniCpan\personal web\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- D:\xvniCpan\personal web\node_modules\next\dist\server\config.js
+- D:\xvniCpan\personal web\node_modules\next\dist\server\next.js
+- D:\xvniCpan\personal web\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (D:\xvniCpan\personal web\.next\server\app\about\page.js:48:7416)
+    at Object.<anonymous> (D:\xvniCpan\personal web\.next\server\app\about\page.js:48:7476) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/about'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 2.5s (2532 modules)
+ GET /about 200 in 1863ms
+ GET /about 200 in 78ms
+ GET /about 500 in 3872ms

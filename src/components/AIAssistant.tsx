@@ -9,8 +9,33 @@ export default function AIAssistant() {
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isThinking, setIsThinking] = useState(false);
+  const [isHidden, setIsHidden] = useState(false); // 背景设置面板打开时隐藏
+  const [isSmallScreen, setIsSmallScreen] = useState(false); // 小屏幕时隐藏
 
   const chatTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 监听背景设置面板的开关状态
+  useEffect(() => {
+    const handleBgPanelToggle = (e: CustomEvent) => {
+      setIsHidden(e.detail.open);
+    };
+
+    window.addEventListener('bg-panel-toggle' as any, handleBgPanelToggle);
+    return () => {
+      window.removeEventListener('bg-panel-toggle' as any, handleBgPanelToggle);
+    };
+  }, []);
+
+  // 监听屏幕宽度变化
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 768); // 768px 以下为小屏幕
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // 说话功能
   const speak = (text: string, duration = 6000) => {
@@ -122,6 +147,11 @@ export default function AIAssistant() {
       dragElastic={0.1}
       whileDrag={{ scale: 1.1, cursor: "grabbing" }}
       className="fixed bottom-20 right-20 z-[9998] flex flex-col items-center group cursor-grab active:cursor-grabbing"
+      style={{
+        opacity: (isHidden || isSmallScreen) ? 0 : 1,
+        pointerEvents: (isHidden || isSmallScreen) ? 'none' : 'auto',
+        transition: 'opacity 0.3s ease-in-out'
+      }}
     >
       {/* 聊天气泡 */}
       <div className="relative w-full flex justify-center mb-6">

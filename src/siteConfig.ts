@@ -66,11 +66,11 @@ const siteConfig = {
 
   // Gitalk 评论系统配置
   gitalkConfig: {
-    clientID: "",  // GitHub OAuth App Client ID
-    clientSecret: "",  // GitHub OAuth App Client Secret
-    repo: "",  // 存储评论的 GitHub 仓库名
-    owner: "",  // GitHub 用户名
-    admin: [""],  // 管理员用户名数组
+    clientID: process.env.NEXT_PUBLIC_GITALK_CLIENT_ID || "",  // GitHub OAuth App Client ID
+    clientSecret: process.env.NEXT_PUBLIC_GITALK_CLIENT_SECRET || "",  // GitHub OAuth App Client Secret
+    repo: "blog-comments",  // 存储评论的 GitHub 仓库名
+    owner: "yvdi-abc",  // GitHub 用户名
+    admin: ["yvdi-abc"],  // 管理员用户名数组
   },
 
   // AI 助手配置（可选：Gemini、OpenAI 等）

@@ -1,0 +1,62 @@
+
+> personal-blog@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.22
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 12.1s
+   Linting and checking validity of types ...
+   Collecting page data ...
+ ⚠ Using edge runtime on a page currently disables static generation for that page
+   Generating static pages (0/32) ...
+   Generating static pages (8/32) 
+   Generating static pages (16/32) 
+   Generating static pages (24/32) 
+ ✓ Generating static pages (32/32)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    14.5 kB         165 kB
+├ ○ /_not-found                             1 kB         104 kB
+├ ○ /about                               5.43 kB         164 kB
+├ ○ /admin                               2.42 kB         139 kB
+├ ƒ /api/admin/chatters                    155 B         103 kB
+├ ƒ /api/admin/config                      155 B         103 kB
+├ ƒ /api/admin/friends                     155 B         103 kB
+├ ƒ /api/admin/posts                       155 B         103 kB
+├ ƒ /api/admin/upload                      155 B         103 kB
+├ ƒ /api/chat                              155 B         103 kB
+├ ƒ /api/music                             155 B         103 kB
+├ ƒ /api/posts                             155 B         103 kB
+├ ƒ /api/posts/[slug]                      155 B         103 kB
+├ ƒ /api/weather                           155 B         103 kB
+├ ○ /blog                                4.07 kB         151 kB
+├ ƒ /blog/[slug]                         4.99 kB         194 kB
+├ ○ /chatter                             4.11 kB         151 kB
+├ ● /chatter/[slug]                        166 B         106 kB
+├   ├ /chatter/hello-world
+├   ├ /chatter/coding-late-night
+├   ├ /chatter/coffee-thoughts
+├   └ [+5 more paths]
+├ ○ /contact                             3.77 kB         151 kB
+├ ○ /friends                             4.88 kB         149 kB
+├ ○ /music                               10.5 kB         162 kB
+├ ○ /photowall                           4.37 kB         115 kB
+├ ● /posts/[slug]                        6.16 kB         165 kB
+├   ├ /posts/nextjs-best-practices
+├   ├ /posts/react-19-features
+├   └ /posts/welcome
+├ ○ /projects                            1.72 kB         149 kB
+└ ○ /timeline                            7.37 kB         154 kB
++ First Load JS shared by all             103 kB
+  ├ chunks/1255-31f47ebe9b12c7e5.js      46.3 kB
+  ├ chunks/4bd1b696-f785427dddbba9fb.js  54.2 kB
+  └ other shared chunks (total)          2.05 kB
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

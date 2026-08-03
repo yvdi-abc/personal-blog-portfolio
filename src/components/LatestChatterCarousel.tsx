@@ -1,9 +1,10 @@
 // components/LatestChatterCarousel.tsx
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CardContainer, CardBody, CardItem } from '@/components/ui/3d-card';
 
 interface Chatter {
   slug: string;
@@ -39,15 +40,21 @@ const DEFAULT_CHATTERS: Chatter[] = [
 
 export default function LatestChatterCarousel({ chatters }: { chatters?: any[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const displayChatters = chatters && chatters.length > 0 ? chatters : DEFAULT_CHATTERS;
 
   useEffect(() => {
-    if (displayChatters.length <= 1) return;
-    const timer = setInterval(() => {
+    if (displayChatters.length <= 1 || isHovering) return;
+
+    timerRef.current = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % displayChatters.length);
     }, 6000);
-    return () => clearInterval(timer);
-  }, [displayChatters.length]);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [displayChatters.length, isHovering]);
 
   if (!displayChatters || displayChatters.length === 0) return null;
 
@@ -60,56 +67,75 @@ export default function LatestChatterCarousel({ chatters }: { chatters?: any[] }
   };
 
   return (
-    <div className="w-full h-full rounded-3xl bg-white/40 dark:bg-slate-800/50 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-xl overflow-hidden relative group min-h-[220px] flex flex-col">
-      <Link href={currentChatter.slug === 'none' ? '/moments' : `/moments`} className="absolute inset-0 z-20" aria-label={`查看杂谈: ${currentChatter.title}`} />
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentChatter.slug}
-          variants={holoVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="absolute inset-0 z-0"
+    <CardContainer className="w-full h-full min-h-[220px]">
+      <CardBody className="w-full h-full">
+        <CardItem
+          translateZ="50"
+          className="w-full h-full"
         >
-          <img src={currentChatter.cover} className="w-full h-full object-cover opacity-80 dark:opacity-60 transition-transform duration-1000 group-hover:scale-105" alt="Chatter Cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10"></div>
-        </motion.div>
-      </AnimatePresence>
+          <div className="w-full h-full rounded-3xl bg-white/40 dark:bg-slate-800/50 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-xl overflow-hidden relative group min-h-[220px] flex flex-col">
+            <Link href={currentChatter.slug === 'none' ? '/moments' : `/moments`} className="absolute inset-0 z-20" aria-label={`查看杂谈: ${currentChatter.title}`} />
 
-      <div className="relative z-10 flex flex-col justify-center p-6 md:p-8 h-full pointer-events-none w-full md:w-[85%]">
-        <div className="flex items-end gap-2 mb-2">
-          <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10 shadow-sm">
-            Records
-          </span>
-          {currentChatter.date && (
-            <span className="text-[11px] font-mono text-slate-300 drop-shadow-md">
-              {currentChatter.date}
-            </span>
-          )}
-        </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentChatter.slug}
+                variants={holoVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                className="absolute inset-0 z-0"
+              >
+                <img src={currentChatter.cover} className="w-full h-full object-cover opacity-80 dark:opacity-60 transition-transform duration-1000 group-hover:scale-105" alt="Chatter Cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10"></div>
+              </motion.div>
+            </AnimatePresence>
 
-        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors line-clamp-1 drop-shadow-md">
-          {currentChatter.title}
-        </h3>
-        <p className="text-sm text-slate-300 font-medium leading-relaxed drop-shadow-md line-clamp-2">
-          {currentChatter.description}
-        </p>
-      </div>
+            <div className="relative z-10 flex flex-col justify-center p-6 md:p-8 h-full pointer-events-none w-full md:w-[85%]">
+              <CardItem translateZ="60" className="flex items-end gap-2 mb-2">
+                <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest bg-black/30 backdrop-blur-sm px-2 py-1 rounded-md border border-white/10 shadow-sm">
+                  Records
+                </span>
+                {currentChatter.date && (
+                  <span className="text-[11px] font-mono text-slate-300 drop-shadow-md">
+                    {currentChatter.date}
+                  </span>
+                )}
+              </CardItem>
 
-      {displayChatters.length > 1 && (
-        <div className="absolute bottom-5 right-6 z-30 flex gap-2">
-          {displayChatters.map((_, i) => (
-            <button
-              key={i}
-              onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }}
-              className={`h-1.5 rounded-full transition-all duration-500 shadow-sm ${i === currentIndex ? 'w-6 bg-indigo-400' : 'w-2 bg-white/40 hover:bg-white/80'}`}
-              aria-label={`跳转`}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+              <CardItem translateZ="80" as="h3" className="text-2xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors line-clamp-1 drop-shadow-md">
+                {currentChatter.title}
+              </CardItem>
+              <CardItem translateZ="70" as="p" className="text-sm text-slate-300 font-medium leading-relaxed drop-shadow-md line-clamp-2">
+                {currentChatter.description}
+              </CardItem>
+            </div>
+
+            {displayChatters.length > 1 && (
+              <CardItem translateZ="90" className="absolute bottom-5 right-6 z-30 flex gap-2">
+                {displayChatters.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentIndex(i);
+                    }}
+                    onMouseEnter={() => {
+                      setIsHovering(true);
+                      setCurrentIndex(i);
+                    }}
+                    onMouseLeave={() => {
+                      setIsHovering(false);
+                    }}
+                    className={`h-1.5 rounded-full transition-all duration-500 shadow-sm ${i === currentIndex ? 'w-6 bg-indigo-400' : 'w-2 bg-white/40 hover:bg-white/80'}`}
+                    aria-label={`跳转`}
+                  />
+                ))}
+              </CardItem>
+            )}
+          </div>
+        </CardItem>
+      </CardBody>
+    </CardContainer>
   );
 }

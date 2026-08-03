@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { readBg, BG_UPDATE_EVENT, getActiveImages, type BgSettingsData } from "./BgSettings";
+import { readBg, BG_UPDATE_EVENT, getActiveImages, type BgSettingsData } from "@/lib/bgSettings";
+import { WebcamPixelGrid } from "./ui/webcam-pixel-grid";
 
 export default function BackgroundSlider() {
   const [settings, setSettings] = useState<BgSettingsData | null>(null);
@@ -56,6 +57,30 @@ export default function BackgroundSlider() {
     return (
       <div className="fixed inset-0 pointer-events-none zi-bg">
         <div className="absolute inset-0" style={{ backgroundColor: `rgba(0,0,0,${opacity * 0.6})` }} />
+      </div>
+    );
+  }
+
+  if (mode === "webcam") {
+    return (
+      <div className="fixed inset-0 pointer-events-none zi-bg">
+        <WebcamPixelGrid
+          gridCols={60}
+          gridRows={40}
+          maxElevation={50}
+          motionSensitivity={0.25}
+          elevationSmoothing={0.2}
+          colorMode="webcam"
+          backgroundColor="#030303"
+          mirror={true}
+          gapRatio={0.05}
+          invertColors={false}
+          darken={0.6}
+          borderColor="#ffffff"
+          borderOpacity={0.06}
+          className="w-full h-full"
+        />
+        <div className="absolute inset-0" style={{ backgroundColor: `rgba(0,0,0,${opacity})` }} />
       </div>
     );
   }

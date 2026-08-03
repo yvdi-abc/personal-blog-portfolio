@@ -14,7 +14,6 @@ import PageTransition from "@/components/PageTransition";
 import CursorEffect from "@/components/CursorEffect";
 import Footer from "@/components/Footer";
 import ClickEffect from "@/components/ClickEffect";
-import BgSettingsButton from "@/components/BgSettingsButton";
 import FireflyEffect from "@/components/FireflyEffect";
 import SakuraEffect from "@/components/SakuraEffect";
 import GlobalToolbox from "@/components/GlobalToolbox";
@@ -55,7 +54,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <BackgroundEffects />
               <CursorEffect />
               <ClickEffect />
-              <BgSettingsButton />
               <GlobalToolbox />
               <FloatingPlayer />
               <AIAssistant />

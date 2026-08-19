@@ -117,8 +117,8 @@ const siteConfig = {
     }
   ],
   icpConfig: {
-    name: "萌ICP备 20260240号",
-    link: "https://icp.gov.moe/?keyword=20260240"
+    name: "萌ICP备20260249号",
+    link: "https://icp.gov.moe/?keyword=20260249"
   },
 
   // 功能开关

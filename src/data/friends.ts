@@ -57,10 +57,10 @@ export const friendsData = [
   },
   {
     "id": 8,
-    "name": "btllk",
+    "name": "闲云随笔录",
     "url": "https://btllk.cn",
-    "avatar": "https://ui-avatars.com/api/?name=btllk&background=6366f1&color=fff&size=200",
-    "description": "友情链接",
+    "avatar": "https://ui-avatars.com/api/?name=闲云随笔录&background=6366f1&color=fff&size=200",
+    "description": "在文字之间，寻找思想的微光",
     "themeColor": "#6366F1"
   }
 ];

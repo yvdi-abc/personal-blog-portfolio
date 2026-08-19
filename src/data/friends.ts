@@ -54,5 +54,13 @@ export const friendsData = [
     "avatar": "https://ts3.tc.mm.bing.net/th/id/OIP-C.sjUpOqaNSr-r6Ftk_criHgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
     "description": "原神牛逼",
     "themeColor": "#FFD700"
+  },
+  {
+    "id": 8,
+    "name": "btllk",
+    "url": "https://btllk.cn",
+    "avatar": "https://ui-avatars.com/api/?name=btllk&background=6366f1&color=fff&size=200",
+    "description": "友情链接",
+    "themeColor": "#6366F1"
   }
 ];

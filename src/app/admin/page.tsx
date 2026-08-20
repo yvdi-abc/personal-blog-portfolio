@@ -5,11 +5,14 @@ import PostsManager from '@/components/admin/PostsManager';
 import ChattersManager from '@/components/admin/ChattersManager';
 import FriendsManager from '@/components/admin/FriendsManager';
 import ConfigManager from '@/components/admin/ConfigManager';
+import SiteSettingsManager from '@/components/admin/SiteSettingsManager';
+import ProjectsManager from '@/components/admin/ProjectsManager';
+import AlbumsManager from '@/components/admin/AlbumsManager';
 
-type Tab = 'posts' | 'chatters' | 'friends' | 'config';
+type Tab = 'settings' | 'posts' | 'chatters' | 'friends' | 'projects' | 'albums' | 'config';
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState<Tab>('config');
+  const [activeTab, setActiveTab] = useState<Tab>('settings');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
   const router = useRouter();
@@ -65,10 +68,13 @@ export default function AdminPage() {
   }
 
   const tabs = [
-    { id: 'config' as Tab, label: '👤 个人信息', color: 'teal' },
+    { id: 'settings' as Tab, label: '⚙️ 网站设置', color: 'teal' },
+    { id: 'projects' as Tab, label: '📦 项目管理', color: 'cyan' },
+    { id: 'albums' as Tab, label: '📸 相册管理', color: 'indigo' },
     { id: 'posts' as Tab, label: '📝 博客文章', color: 'teal' },
     { id: 'chatters' as Tab, label: '💭 碎语', color: 'purple' },
     { id: 'friends' as Tab, label: '🔗 友链', color: 'blue' },
+    { id: 'config' as Tab, label: '👤 个人信息', color: 'slate' },
   ];
 
   return (
@@ -143,6 +149,9 @@ export default function AdminPage() {
 
         {/* Content */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6">
+          {activeTab === 'settings' && <SiteSettingsManager />}
+          {activeTab === 'projects' && <ProjectsManager />}
+          {activeTab === 'albums' && <AlbumsManager />}
           {activeTab === 'config' && <ConfigManager />}
           {activeTab === 'posts' && <PostsManager />}
           {activeTab === 'chatters' && <ChattersManager />}

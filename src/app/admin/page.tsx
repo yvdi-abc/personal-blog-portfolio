@@ -1,5 +1,6 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import PostsManager from '@/components/admin/PostsManager';
 import ChattersManager from '@/components/admin/ChattersManager';
 import FriendsManager from '@/components/admin/FriendsManager';
@@ -9,17 +10,58 @@ type Tab = 'posts' | 'chatters' | 'friends' | 'config';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<Tab>('config');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
+  const router = useRouter();
 
-  // 只在开发环境显示
-  if (process.env.NODE_ENV === 'production') {
+  // 检查认证状态
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('/api/admin/check-auth');
+        const data = await res.json();
+
+        if (data.authenticated) {
+          setIsAuthenticated(true);
+        } else {
+          router.push('/admin/login');
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        router.push('/admin/login');
+      } finally {
+        setIsChecking(false);
+      }
+    };
+
+    checkAuth();
+  }, [router]);
+
+  // 登出功能
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/logout', { method: 'POST' });
+      router.push('/admin/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
+  // 正在检查认证状态
+  if (isChecking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">🔒 管理后台</h1>
-          <p className="text-slate-400">管理后台仅在开发环境可用</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-teal-500 border-t-transparent mb-4"></div>
+          <p className="text-slate-600 dark:text-slate-400">验证身份中...</p>
         </div>
       </div>
     );
+  }
+
+  // 未认证
+  if (!isAuthenticated) {
+    return null;
   }
 
   const tabs = [
@@ -33,13 +75,24 @@ export default function AdminPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <div className="max-w-7xl mx-auto p-6">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
-            🛠️ 管理后台
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400">
-            编辑网站内容，保存后提交到 Git 即可同步到线上
-          </p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+              🛠️ 管理后台
+            </h1>
+            <p className="text-slate-600 dark:text-slate-400">
+              编辑网站内容，保存后提交到 Git 即可同步到线上
+            </p>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="px-6 py-2.5 bg-red-500 hover:bg-red-600 text-white font-medium rounded-xl transition-colors flex items-center gap-2 shadow-lg"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            登出
+          </button>
         </div>
 
         {/* 使用说明 */}

@@ -1,5 +1,5 @@
 import { chattersData } from '@/data/chatters';
-import siteConfig from '@/siteConfig';
+import { siteConfig } from "@/siteConfig";
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 

@@ -16,7 +16,7 @@ import 'highlight.js/styles/atom-one-dark.css';
 
 import Navbar from '@/components/Navbar';
 import PageTransition from '@/components/PageTransition';
-import siteConfig from '@/siteConfig';
+import { siteConfig } from "@/siteConfig";
 import ClientSocials from '@/components/ClientSocials';
 import ClientTOC from '@/components/ClientTOC';
 import BackButton from '@/components/BackButton';
@@ -251,7 +251,7 @@ export default async function Post({ params }: { params: Promise<{ slug: string 
               <div className="w-20 h-20 mx-auto rounded-full p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-md mb-4 transition-transform duration-500 hover:rotate-3">
                 <img src={siteConfig.avatarUrl} alt="avatar" className="w-full h-full rounded-full object-cover bg-white" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{siteConfig.authorName}</h3>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{siteConfig.author.name}</h3>
               <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium mb-4">{siteConfig.bio}</p>
               <ClientSocials />
             </div>

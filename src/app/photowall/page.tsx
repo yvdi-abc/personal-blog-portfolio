@@ -1,4 +1,4 @@
-import siteConfig from "@/siteConfig";
+import { siteConfig } from "@/siteConfig";
 import PhotoWallClient from "./PhotoWallClient";
 
 export const metadata = {

@@ -22,7 +22,7 @@ import RainEffect from "@/components/RainEffect";
 import GlobalSnow from "@/components/GlobalSnow";
 import FloatingPlayer from "@/components/FloatingPlayer";
 import AIAssistant from "@/components/AIAssistant";
-import siteConfig from "@/siteConfig";
+import { siteConfig } from "@/siteConfig";
 
 export const metadata: Metadata = {
   title: siteConfig.title,

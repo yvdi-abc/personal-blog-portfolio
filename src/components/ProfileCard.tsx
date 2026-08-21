@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
-import siteConfig from '@/siteConfig';
+import { siteConfig } from "@/siteConfig";
 import { useToast } from './ToastProvider';
 import { CardContainer, CardBody, CardItem } from '@/components/ui/3d-card';
 
@@ -36,7 +36,7 @@ export default function ProfileCard({ postCount, chatterCount, photoCount }: { p
                     <img src={siteConfig.avatarUrl} alt="avatar" className="w-full h-full rounded-lg md:rounded-xl object-cover bg-white" />
                   ) : (
                     <div className="w-full h-full rounded-lg md:rounded-xl bg-white flex items-center justify-center text-indigo-500 font-black text-2xl">
-                      {siteConfig.authorName.substring(0, 2).toUpperCase()}
+                      {siteConfig.author.name.substring(0, 2).toUpperCase()}
                     </div>
                   )}
                 </CardItem>
@@ -45,7 +45,7 @@ export default function ProfileCard({ postCount, chatterCount, photoCount }: { p
                     translateZ="80"
                     className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-1 md:mb-2 pb-1 leading-snug tracking-wider truncate"
                   >
-                    {siteConfig.authorName}
+                    {siteConfig.author.name}
                   </CardItem>
                   <CardItem
                     translateZ="60"

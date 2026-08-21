@@ -1,5 +1,5 @@
 import TimelineClient from '@/components/TimelineClient';
-import siteConfig from '@/siteConfig';
+import { siteConfig } from "@/siteConfig";
 
 export const metadata = {
   title: "归档与探索 | " + siteConfig.title,

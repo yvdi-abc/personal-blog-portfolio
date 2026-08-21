@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { friendsData } from '@/data/friends';
-import siteConfig from '@/siteConfig';
+import { siteConfig } from "@/siteConfig";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -21,7 +21,7 @@ const itemVariants = {
 export default function FriendsBoard() {
   const [isCopied, setIsCopied] = useState(false);
 
-  const applyFormat = `名称：${siteConfig.authorName}
+  const applyFormat = `名称：${siteConfig.author.name}
 网址：${typeof window !== 'undefined' ? window.location.origin : 'https://your-site.com'}
 头像：${typeof window !== 'undefined' ? window.location.origin : 'https://your-site.com'}/avatar.jpg
 简介：${siteConfig.bio}`;

@@ -1,6 +1,6 @@
 "use client";
 
-import siteConfig from '@/siteConfig';
+import { siteConfig } from "@/siteConfig";
 import { useToast } from './ToastProvider';
 
 function SocialBtn({ type, url, onClick }: { type: string, url?: string, onClick?: () => void }) {

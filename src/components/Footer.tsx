@@ -1,5 +1,5 @@
 import Link from "next/link";
-import siteConfig from "@/siteConfig";
+import { siteConfig } from "@/siteConfig";
 
 export default function Footer() {
   return (
@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            &copy; 2026 {siteConfig.authorName}
+            &copy; 2026 {siteConfig.author.name}
           </p>
           <div className="flex gap-6 text-sm text-slate-500 dark:text-slate-400">
             <Link href="/" className="hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">首页</Link>

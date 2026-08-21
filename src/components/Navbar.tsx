@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, PanInfo } from 'framer-motion';
-import siteConfig from '@/siteConfig';
+import { siteConfig } from "@/siteConfig";
 import { useTheme } from './ThemeProvider';
 import { Sun, Moon } from 'lucide-react';
 
@@ -92,7 +92,7 @@ export default function Navbar() {
       <header className={`hidden md:block w-full fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${showNav ? 'translate-y-0' : '-translate-y-full'} bg-white/40 dark:bg-slate-900/50 backdrop-blur-xl border-white/20 dark:border-white/5 shadow-sm`}>
         <div className="w-[90%] max-w-6xl mx-auto h-16 flex items-center justify-between px-4 sm:px-[30px] box-border">
           <Link href="/" className="text-xl font-black text-slate-800 dark:text-white tracking-tighter hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300">
-            {siteConfig.authorName}
+            {siteConfig.author.name}
             <span className="text-indigo-500 mx-1">の</span>
             博客
           </Link>

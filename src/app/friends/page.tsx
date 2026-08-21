@@ -1,5 +1,5 @@
 import FriendsBoard from './FriendsBoard';
-import siteConfig from '@/siteConfig';
+import { siteConfig } from "@/siteConfig";
 
 export const metadata = {
   title: "友链 | " + siteConfig.title,

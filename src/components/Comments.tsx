@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import siteConfig from '@/siteConfig';
+import { siteConfig } from "@/siteConfig";
 
 export default function Comments() {
   const containerRef = useRef<HTMLDivElement>(null);

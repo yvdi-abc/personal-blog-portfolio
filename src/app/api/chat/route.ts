@@ -1,5 +1,5 @@
 // app/api/chat/route.ts
-import siteConfig from '@/siteConfig';
+import { siteConfig } from "@/siteConfig";
 
 export const runtime = 'edge';
 

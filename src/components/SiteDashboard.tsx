@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import siteConfig from '@/siteConfig';
+import { siteConfig } from "@/siteConfig";
 import { CardContainer, CardBody, CardItem } from '@/components/ui/3d-card';
 
 export default function SiteDashboard() {

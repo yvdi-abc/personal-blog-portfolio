@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/Cards";
-import siteConfig from "@/siteConfig";
+import { siteConfig } from "@/siteConfig";
 
 export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => {

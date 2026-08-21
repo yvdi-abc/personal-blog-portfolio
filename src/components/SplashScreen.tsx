@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import siteConfig from "@/siteConfig";
+import { siteConfig } from "@/siteConfig";
 
 const shapes = ["●", "■", "▲", "◆", "⬟", "◉", "★", "◇"];
 
@@ -94,7 +94,7 @@ export default function SplashScreen() {
 
           <div className="relative z-10 text-center px-6 pointer-events-none">
             <motion.div className="mb-6">
-              {siteConfig.authorName.split("").map((ch, i) => (
+              {siteConfig.author.name.split("").map((ch, i) => (
                 <motion.span key={i}
                   className="inline-block text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight"
                   initial={{ opacity: 0, y: -80, rotateZ: -30, scale: 0.5 }}

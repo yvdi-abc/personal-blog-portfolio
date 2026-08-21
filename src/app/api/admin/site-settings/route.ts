@@ -50,6 +50,11 @@ export async function POST(request: Request) {
     const settings = await request.json();
     const siteConfigPath = path.join(process.cwd(), 'src', 'siteConfig.ts');
 
+    // 验证必填字段
+    if (!settings.title || !settings.authorName || !settings.navTitle) {
+      return NextResponse.json({ error: 'Title, author name, and nav title are required' }, { status: 400 });
+    }
+
     // 构建新的配置文件内容
     const newContent = `export const siteConfig = {
   title: "${escapeString(settings.title)}",
@@ -57,18 +62,18 @@ export async function POST(request: Request) {
     name: "${escapeString(settings.authorName)}",
   },
   navTitle: "${escapeString(settings.navTitle)}",
-  bio: "${escapeString(settings.bio)}",
-  avatarUrl: "${escapeString(settings.avatarUrl)}",
+  bio: "${escapeString(settings.bio || '')}",
+  avatarUrl: "${escapeString(settings.avatarUrl || '')}",
   social: {
-    email: "${escapeString(settings.email)}",
-    github: "${escapeString(settings.github)}",
+    email: "${escapeString(settings.email || '')}",
+    github: "${escapeString(settings.github || '')}",
   },
-  musicIds: [${settings.musicIds.map((id: string) => `"${escapeString(id)}"`).join(', ')}],
-  danmakuList: [${settings.danmakuList.map((text: string) => `"${escapeString(text)}"`).join(', ')}],
-  buildDate: "${escapeString(settings.buildDate)}",
+  musicIds: [${settings.musicIds && settings.musicIds.length > 0 ? settings.musicIds.map((id: string) => `"${escapeString(id)}"`).join(', ') : ''}],
+  danmakuList: [${settings.danmakuList && settings.danmakuList.length > 0 ? settings.danmakuList.map((text: string) => `"${escapeString(text)}"`).join(', ') : ''}],
+  buildDate: "${escapeString(settings.buildDate || new Date().toISOString())}",
   icpConfig: {
-    name: "${escapeString(settings.icpName)}",
-    link: "${escapeString(settings.icpLink)}"
+    name: "${escapeString(settings.icpName || '')}",
+    link: "${escapeString(settings.icpLink || '')}"
   }
 };
 `;

@@ -1,6 +1,8 @@
-const siteConfig = {
+export const siteConfig = {
   title: "Yvdiの小窝",
-  authorName: "Yvdi",
+  author: {
+    name: "Yvdi",
+  },
   navTitle: "Yvdiの小窝",
   navSuffix: ".",
   bio: "在校大学生|业余开发者",
@@ -19,23 +21,8 @@ const siteConfig = {
   ],
 
   // 音乐配置
-  musicServer: "netease",  // 音乐平台：netease（网易云）
-  musicIds: [  // 音乐 ID 列表
-    "1809646618",   // 云月谣 - 兰音Reine
-    "2755332551",   // DAMIDAMI - Sihan/三Z-STUDIO/HOYO-MiX (《绝区零》卢西娅EP)
-    "2155422573",   // 使一颗心免于哀伤 - 知更鸟/HOYO-MiX/Chevy (崩坏：星穹铁道)
-    "2618046004",   // 红透晚烟青 - 金玟岐/三Z-STUDIO/HOYO-MiX (《绝区零》青衣EP)
-    "1818031620",   // 让风告诉你 - 花玲/喵☆酱/宴宁/kinsen (《原神》2021拜年纪同人曲)
-    "2750140001",   // 提瓦特民谣 - 宴宁/XY大甘蔗等 (《原神》五周年同人曲)
-    "2014336709",   // 我不曾忘记 - 花玲/张安琪/沐霏 (《原神》2023新春会同人曲)
-    "2711809790",   // 不及 - 苏诗丁/三Z-STUDIO/HOYO-MiX (《绝区零》仪玄EP)
-    "2155423468",   // 希望有羽毛和翅膀 - 知更鸟/HOYO-MiX/Chevy (崩坏：星穹铁道)
-    "2671812705",   // 反乌托邦 - 乌托邦P
-    "1375725396",   // Cyberangel - Hanser (IP动画短片《天使重构》主题曲)
-    "3396545503",   // Amore - ReoNa (TV动画《与你相恋到生命尽头》片头曲)
-    "3351427829",   // Penny-打火机 (哈基米南北绿豆) - Jovin (翻唱版)
-    "3368687705",   // 哈基米南北绿豆 - 明宇
-  ],
+  musicServer: "netease",
+  musicIds: ["1809646618", "2755332551", "2155422573", "2618046004", "1818031620", "2750140001", "2014336709", "2711809790", "2155423468", "2671812705", "1375725396", "3396545503", "3351427829", "3368687705", "2738459901", "2716424334", "1859603835", "32431066"],
 
   social: {
     github: "https://github.com/yvdi-abc",
@@ -51,31 +38,20 @@ const siteConfig = {
   chatterDescription: "记录生活的点点滴滴",
 
   // 全局背景弹幕配置
-  danmakuList: [
-    "在干嘛呢？",
-    "欢迎来到我的小站~",
-    "今天学习了吗？",
-    "代码写得怎么样了？",
-    "前方高能反应！",
-    "摸鱼中...",
-    "又在调 bug 吗？",
-    "Tailwind CSS 真香",
-    "Next.js 真好用",
-    "React 19 来了！",
-  ],
+  danmakuList: ["在干嘛呢？", "欢迎来到我的小站~", "今天学习了吗？", "代码写得怎么样了？", "前方高能反应！", "摸鱼中...", "喵喵喵喵喵喵喵？", "我喜欢你", "可爱捏", "加油喔", "哇", "111111111111111111"],
 
   // Gitalk 评论系统配置
   gitalkConfig: {
-    clientID: process.env.NEXT_PUBLIC_GITALK_CLIENT_ID || "",  // GitHub OAuth App Client ID
-    clientSecret: process.env.NEXT_PUBLIC_GITALK_CLIENT_SECRET || "",  // GitHub OAuth App Client Secret
-    repo: "blog-comments",  // 存储评论的 GitHub 仓库名
-    owner: "yvdi-abc",  // GitHub 用户名
-    admin: ["yvdi-abc"],  // 管理员用户名数组
+    clientID: process.env.NEXT_PUBLIC_GITALK_CLIENT_ID || "",
+    clientSecret: process.env.NEXT_PUBLIC_GITALK_CLIENT_SECRET || "",
+    repo: "blog-comments",
+    owner: "yvdi-abc",
+    admin: ["yvdi-abc"],
   },
 
-  // AI 助手配置（可选：Gemini、OpenAI 等）
+  // AI 助手配置
   geminiConfig: {
-    modelId: "gemini-2.0-flash-exp",  // Gemini 模型 ID
+    modelId: "gemini-2.0-flash-exp",
     systemPrompt: `你是一个友好、聪明、有点幽默的 AI 助手。
 你的主人是一个喜欢编程的学生开发者。
 你说话的特点是：
@@ -95,10 +71,10 @@ const siteConfig = {
 
   // 统计数据
   counts: {
-    photos: 0,  // 照片墙数量
+    photos: 0,
   },
 
-  buildDate: "2026-07-30T00:00:00",  // 建站日期
+  buildDate: "2026-07-30T00:00:00",
   footerBadges: [
     {
       name: "Next.js 15",
@@ -122,7 +98,5 @@ const siteConfig = {
   },
 
   // 功能开关
-  enableLevelSystem: false,  // 是否启用等级系统
+  enableLevelSystem: false,
 };
-
-export default siteConfig;

@@ -16,5 +16,19 @@ export const siteConfig = {
   icpConfig: {
     name: "萌ICP备20260249号",
     link: "https://icp.gov.moe/?keyword=20260249"
-  }
+  },
+  geminiConfig: {
+    modelId: "gemini-2.0-flash-exp",
+    systemPrompt: "你是一个友好的AI助手，用简洁、温暖的语气回答问题。",
+    maxOutputTokens: 1000,
+    temperature: 0.7
+  },
+  gitalkConfig: {
+    clientID: "",
+    clientSecret: "",
+    repo: "",
+    owner: "",
+    admin: []
+  },
+  defaultPostCover: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200"
 };

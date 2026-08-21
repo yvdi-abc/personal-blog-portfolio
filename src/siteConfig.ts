@@ -1,4 +1,6 @@
-export const siteConfig = {
+import type { SiteConfig } from './types/siteConfig';
+
+export const siteConfig: SiteConfig = {
   title: "Yvdiの小窝",
   author: {
     name: "Yvdi",

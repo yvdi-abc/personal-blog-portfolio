@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import fs from 'fs/promises';
 import path from 'path';
+import { getGitHubClient } from '@/lib/github';
 
 export async function GET() {
   const cookieStore = await cookies();
@@ -48,7 +49,6 @@ export async function POST(request: Request) {
 
   try {
     const settings = await request.json();
-    const siteConfigPath = path.join(process.cwd(), 'src', 'siteConfig.ts');
 
     // 验证必填字段
     if (!settings.title || !settings.authorName || !settings.navTitle) {
@@ -78,9 +78,41 @@ export async function POST(request: Request) {
 };
 `;
 
-    await fs.writeFile(siteConfigPath, newContent, 'utf-8');
+    const filePath = 'src/siteConfig.ts';
+    const githubClient = getGitHubClient();
 
-    return NextResponse.json({ success: true });
+    if (githubClient) {
+      // 生产环境：通过 GitHub API 更新
+      try {
+        const { sha } = await githubClient.getFile(filePath);
+        await githubClient.updateFile(
+          filePath,
+          newContent,
+          'chore: update site configuration via admin panel',
+          sha
+        );
+
+        return NextResponse.json({
+          success: true,
+          message: '配置已保存到 GitHub，Vercel 将自动重新部署（约 1-2 分钟）'
+        });
+      } catch (error) {
+        console.error('GitHub API error:', error);
+        return NextResponse.json({
+          error: 'Failed to update via GitHub API',
+          details: error instanceof Error ? error.message : 'Unknown error'
+        }, { status: 500 });
+      }
+    } else {
+      // 本地环境：直接写入文件
+      const siteConfigPath = path.join(process.cwd(), filePath);
+      await fs.writeFile(siteConfigPath, newContent, 'utf-8');
+
+      return NextResponse.json({
+        success: true,
+        message: '配置已保存，请重启开发服务器以应用更改'
+      });
+    }
   } catch (error) {
     console.error('Failed to save site config:', error);
     return NextResponse.json({ error: 'Failed to save config' }, { status: 500 });

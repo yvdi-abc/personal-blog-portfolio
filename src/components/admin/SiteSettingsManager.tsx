@@ -45,7 +45,11 @@ export default function SiteSettingsManager() {
     try {
       const res = await fetch('/api/admin/site-settings');
       const data = await res.json();
-      setSettings(data);
+      setSettings({
+        ...data,
+        musicIds: data.musicIds || [],
+        danmakuList: data.danmakuList || [],
+      });
     } catch (error) {
       console.error('Failed to load settings:', error);
     } finally {
@@ -244,7 +248,7 @@ export default function SiteSettingsManager() {
             </button>
           </div>
           <div className="space-y-2 max-h-60 overflow-y-auto">
-            {settings.musicIds.map((id, index) => (
+            {(settings.musicIds || []).map((id, index) => (
               <div
                 key={index}
                 className="flex items-center justify-between bg-white dark:bg-slate-900 p-3 rounded-lg border border-slate-200 dark:border-slate-700"
@@ -290,7 +294,7 @@ export default function SiteSettingsManager() {
             </button>
           </div>
           <div className="space-y-2 max-h-60 overflow-y-auto">
-            {settings.danmakuList.map((text, index) => (
+            {(settings.danmakuList || []).map((text, index) => (
               <div
                 key={index}
                 className="flex items-center justify-between bg-white dark:bg-slate-900 p-3 rounded-lg border border-slate-200 dark:border-slate-700"

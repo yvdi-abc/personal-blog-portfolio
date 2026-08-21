@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
+import { siteConfig } from '@/siteConfig';
 
 interface Danmaku {
   id: number;
@@ -10,23 +11,7 @@ interface Danmaku {
   fontSize: number;
 }
 
-const DANMAKU_TEXTS = [
-  "欢迎来到我的博客",
-  "热爱编程 热爱生活",
-  "Keep Learning",
-  "Code with Love",
-  "让代码更优雅",
-  "追求极致体验",
-  "永远保持好奇心",
-  "创造有温度的产品",
-  "用心写好每一行代码",
-  "Stay Hungry Stay Foolish",
-  "技术改变世界",
-  "专注成就卓越",
-  "梦想驱动创造",
-  "用代码书写诗意",
-  "探索无限可能",
-];
+const DANMAKU_TEXTS = siteConfig.danmakuList;
 
 const COLORS = [
   '#FFFFFF',  // 白色（最常见）

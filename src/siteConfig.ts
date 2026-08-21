@@ -30,5 +30,11 @@ export const siteConfig = {
     owner: "",
     admin: []
   },
-  defaultPostCover: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200"
+  defaultPostCover: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200",
+  footerBadges: [
+    { icon: "⚡", text: "Next.js 15" },
+    { icon: "⚛️", text: "React 19" },
+    { icon: "🎨", text: "Tailwind CSS" },
+    { icon: "📝", text: "TypeScript" }
+  ]
 };

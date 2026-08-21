@@ -12,7 +12,7 @@ const formatTime = (time: number) => {
 };
 
 export default function CloudPlayer() {
-  const { playlist, currentSong, isPlaying, progress, currentTime, duration, currentLyric, isLoading, togglePlay, nextSong, prevSong, handleSeek } = useMusic();
+  const { playlist, currentSong, isPlaying, progress, currentTime, duration, currentLyric, isLoading, togglePlay, nextSong, prevSong, handleSeek, playMode, togglePlayMode } = useMusic();
   const [displayedLyric, setDisplayedLyric] = useState("");
   const router = useRouter();
 
@@ -73,6 +73,52 @@ export default function CloudPlayer() {
     nextSong();
   };
 
+  const safeTogglePlayMode = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    togglePlayMode();
+  };
+
+  // 播放模式图标
+  const getPlayModeIcon = () => {
+    switch (playMode) {
+      case 'single':
+        // 单曲循环：带数字1的循环图标
+        return (
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/>
+            <text x="12" y="15" fontSize="10" fontWeight="bold" textAnchor="middle" fill="currentColor">1</text>
+          </svg>
+        );
+      case 'random':
+        // 随机播放：交叉箭头图标
+        return (
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/>
+          </svg>
+        );
+      default: // loop
+        // 列表循环：普通循环图标
+        return (
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/>
+          </svg>
+        );
+    }
+  };
+
+  // 播放模式文字
+  const getPlayModeText = () => {
+    switch (playMode) {
+      case 'single':
+        return '单曲循环';
+      case 'random':
+        return '随机播放';
+      default:
+        return '列表循环';
+    }
+  };
+
   const safeHandleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     handleSeek(e);
@@ -114,38 +160,46 @@ export default function CloudPlayer() {
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-white/80 backdrop-blur-sm rounded-full border border-gray-300 shadow-inner"></div>
                 </CardItem>
 
-                <div className="flex-col overflow-hidden w-full">
-                  <CardItem translateZ="60" className="flex items-center justify-between mb-1">
+                <div className="flex flex-col overflow-hidden w-full">
+                  <CardItem translateZ="60" className="flex items-center mb-1 w-full">
                     <span className="text-[10px] font-black text-indigo-500 dark:text-indigo-400 tracking-widest uppercase bg-white/50 dark:bg-slate-900/50 px-2 py-0.5 rounded-sm shadow-sm transition-colors duration-700">Cloud Music</span>
                   </CardItem>
-                  <CardItem translateZ="80" as="h3" className="text-xl font-bold text-slate-900 dark:text-white truncate drop-shadow-sm transition-colors duration-700">{currentSong.title}</CardItem>
-                  <CardItem translateZ="70" as="p" className="text-sm text-slate-700 dark:text-slate-300 font-medium truncate drop-shadow-sm transition-colors duration-700">{currentSong.artist}</CardItem>
+                  <CardItem translateZ="80" as="h3" className="text-xl font-bold text-slate-900 dark:text-white truncate drop-shadow-sm transition-colors duration-700 w-full text-left">{currentSong.title}</CardItem>
+                  <CardItem translateZ="70" as="p" className="text-sm text-slate-700 dark:text-slate-300 font-medium truncate drop-shadow-sm transition-colors duration-700 w-full text-left">{currentSong.artist}</CardItem>
                 </div>
               </div>
 
               <CardItem translateZ="60" className="relative z-10 mb-2 h-6 overflow-hidden">
-                 <p className="text-xs font-bold text-indigo-600 dark:text-indigo-400 truncate">{displayedLyric}</p>
+                 <p className="text-xs font-bold text-indigo-600 dark:text-indigo-400 truncate text-center">{displayedLyric}</p>
               </CardItem>
 
               <div className="relative z-10 mt-auto">
                 <CardItem
                    translateZ="50"
-                   className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300 font-bold mb-3 transition-colors duration-700"
+                   className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300 font-bold mb-3 transition-colors duration-700"
                    onClick={(e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); }}
                    onPointerDown={(e: React.PointerEvent) => { e.stopPropagation(); }}
                 >
-                  <span className="w-10 text-right">{formatTime(currentTime)}</span>
+                  <span className="w-11 text-center">{formatTime(currentTime)}</span>
                   <input
                     type="range" min="0" max="100"
                     value={progress}
                     onChange={safeHandleSeek}
-                    className="flex-1 h-1.5 bg-white/40 dark:bg-slate-700/50 rounded-full appearance-none outline-none cursor-pointer shadow-inner"
+                    className="flex-1 min-w-0 h-1.5 bg-white/40 dark:bg-slate-700/50 rounded-full appearance-none outline-none cursor-pointer shadow-inner"
                     style={{ background: `linear-gradient(to right, #818cf8 ${progress}%, rgba(148,163,184,0.4) ${progress}%)` }}
                   />
-                  <span className="w-10">{formatTime(duration)}</span>
+                  <span className="w-11 text-center">{formatTime(duration)}</span>
                 </CardItem>
 
                 <CardItem translateZ="80" className="flex items-center justify-center gap-6">
+                  <button
+                    onClick={safeTogglePlayMode}
+                    className="text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors drop-shadow-sm relative z-20"
+                    title={getPlayModeText()}
+                  >
+                    {getPlayModeIcon()}
+                  </button>
+
                   <button onClick={safePrevSong} className="text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors drop-shadow-sm relative z-20">
                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
                   </button>
@@ -156,6 +210,10 @@ export default function CloudPlayer() {
 
                   <button onClick={safeNextSong} className="text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors drop-shadow-sm relative z-20">
                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                  </button>
+
+                  <button className="text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors drop-shadow-sm relative z-20 opacity-50 cursor-default">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
                   </button>
                 </CardItem>
               </div>

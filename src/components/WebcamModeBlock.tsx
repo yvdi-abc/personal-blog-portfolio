@@ -4,11 +4,37 @@ import { Camera, Image, Sparkles, CloudRain, Snowflake, Sun, Settings } from "lu
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { readBg, type BgSettingsData, DEFAULT_IMAGES } from "@/lib/bgSettings";
 
+const DEFAULT_SETTINGS: BgSettingsData = {
+  mode: "webcam",
+  enabled: true,
+  opacity: 80,
+  interval: 6,
+  blur: 0,
+  customImages: [],
+  activeDefaults: [true, true, true, true, true],
+  activeCustom: [],
+  effects: {
+    firefly: true,
+    sakura: true,
+    grass: true,
+    rain: false,
+    snow: false,
+  },
+  theme: "system",
+};
+
 export default function BackgroundControlBlock() {
-  const [settings, setSettings] = useState<BgSettingsData>(readBg());
+  const [settings, setSettings] = useState<BgSettingsData>(DEFAULT_SETTINGS);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
+
     // 初始化读取设置
     setSettings(readBg());
 
@@ -24,7 +50,7 @@ export default function BackgroundControlBlock() {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('bg-settings-changed', handleStorageChange);
     };
-  }, []);
+  }, [isClient]);
 
   const saveSettings = (newSettings: BgSettingsData) => {
     try {

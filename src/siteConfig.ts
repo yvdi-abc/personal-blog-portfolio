@@ -4,7 +4,7 @@ export const siteConfig = {
     name: "Yvdi",
   },
   navTitle: "Yvdiの小窝",
-  bio: "在校大学生|业余开发者",
+  bio: "在校大学生|喜欢做一些小东西",
   avatarUrl: "/avatar.jpg",
   social: {
     email: "3625607718@qq.com",

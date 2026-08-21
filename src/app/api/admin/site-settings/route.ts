@@ -13,8 +13,27 @@ export async function GET() {
   }
 
   try {
-    const siteConfigPath = path.join(process.cwd(), 'src', 'siteConfig.ts');
-    const content = await fs.readFile(siteConfigPath, 'utf-8');
+    const filePath = 'src/siteConfig.ts';
+    const githubClient = getGitHubClient();
+    let content: string;
+
+    if (githubClient) {
+      // 生产环境：通过 GitHub API 读取
+      try {
+        const result = await githubClient.getFile(filePath);
+        content = result.content;
+      } catch (error) {
+        console.error('GitHub API error:', error);
+        return NextResponse.json({
+          error: 'Failed to read via GitHub API',
+          details: error instanceof Error ? error.message : 'Unknown error'
+        }, { status: 500 });
+      }
+    } else {
+      // 本地环境：直接读取文件
+      const siteConfigPath = path.join(process.cwd(), filePath);
+      content = await fs.readFile(siteConfigPath, 'utf-8');
+    }
 
     // 解析配置文件内容
     const settings = {

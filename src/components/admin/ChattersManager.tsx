@@ -34,7 +34,7 @@ export default function ChattersManager() {
     try {
       const res = await fetch('/api/admin/chatters');
       const data = await res.json();
-      setChatters(data.chatters || []);
+      setChatters((data.data?.chatters || data.chatters || data.data || [])); // 支持多种返回格式
     } catch (error) {
       alert('加载碎语失败');
     } finally {

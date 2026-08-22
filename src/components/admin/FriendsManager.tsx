@@ -32,7 +32,7 @@ export default function FriendsManager() {
     try {
       const res = await fetch('/api/admin/friends');
       const data = await res.json();
-      setFriends(data.friends || []);
+      setFriends((data.data?.friends || data.friends || data.data || [])); // 支持多种返回格式
     } catch (error) {
       alert('加载友链失败');
     } finally {

@@ -38,7 +38,7 @@ export default function AlbumsManager() {
     try {
       const res = await fetch('/api/admin/albums');
       const data = await res.json();
-      setAlbums(data);
+      setAlbums(data.data || data); // 支持两种返回格式
     } catch (error) {
       console.error('Failed to load albums:', error);
     } finally {

@@ -34,7 +34,7 @@ export default function ProjectsManager() {
     try {
       const res = await fetch('/api/admin/projects');
       const data = await res.json();
-      setProjects(data);
+      setProjects(data.data || data); // 支持两种返回格式
     } catch (error) {
       console.error('Failed to load projects:', error);
     } finally {

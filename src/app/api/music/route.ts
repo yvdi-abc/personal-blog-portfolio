@@ -56,12 +56,16 @@ export async function GET(request: NextRequest) {
 
         const artistName = song.artists?.[0]?.name || '未知歌手';
 
+        // 使用代理 URL 避免 CORS 问题
+        const musicUrl = `https://music.163.com/song/media/outer/url?id=${songId}.mp3`;
+        const proxyUrl = `/api/music/proxy?url=${encodeURIComponent(musicUrl)}`;
+
         return {
           id: songId,
           name: song.name,
           artist: artistName,
           cover: song.album?.picUrl || '',
-          url: `https://music.163.com/song/media/outer/url?id=${songId}.mp3`,
+          url: proxyUrl,
           lrc: lrcText,
         };
       } catch (error) {

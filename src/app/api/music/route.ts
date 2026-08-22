@@ -56,8 +56,10 @@ export async function GET(request: NextRequest) {
 
         const artistName = song.artists?.[0]?.name || '未知歌手';
 
-        // 使用代理 URL 避免 CORS 问题
+        // 构建音乐 URL
         const musicUrl = `https://music.163.com/song/media/outer/url?id=${songId}.mp3`;
+
+        // 优先使用代理，但同时提供原始 URL 作为备用
         const proxyUrl = `/api/music/proxy?url=${encodeURIComponent(musicUrl)}`;
 
         return {
@@ -66,6 +68,7 @@ export async function GET(request: NextRequest) {
           artist: artistName,
           cover: song.album?.picUrl || '',
           url: proxyUrl,
+          fallbackUrl: musicUrl, // 添加备用 URL
           lrc: lrcText,
         };
       } catch (error) {

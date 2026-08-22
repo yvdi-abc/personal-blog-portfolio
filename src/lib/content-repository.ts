@@ -1,4 +1,5 @@
 import { fileManager } from '@/lib/file-manager';
+import { parseDataArray } from '@/lib/api-utils';
 import type { Album } from '@/data/albums';
 import type { Project } from '@/data';
 import type { Post } from '@/lib/posts';
@@ -23,25 +24,11 @@ export interface Friend {
 }
 
 function parseResourceArray<T>(content: string, declaration: string, label: string): T[] {
-  const data = parseDataArray<T>(content, declaration);
+  const data = parseDataArray(content, declaration);
   if (!data) {
     throw new Error(`${label} 数据格式无效`);
   }
-  return data;
-}
-
-function parseDataArray<T>(content: string, declaration: string): T[] | null {
-  const match = content.match(
-    new RegExp(`export const ${declaration}[^=]*= (\\[[\\s\\S]*?\\]);`)
-  );
-
-  if (!match) return null;
-
-  try {
-    return JSON.parse(match[1]) as T[];
-  } catch {
-    return null;
-  }
+  return data as T[];
 }
 
 export async function getProjects(): Promise<Project[]> {

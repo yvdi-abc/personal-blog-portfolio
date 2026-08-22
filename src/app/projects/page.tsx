@@ -8,7 +8,7 @@ export default function Projects() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.2 }}
       className="w-[90%] max-w-6xl mx-auto mt-24 md:mt-28 px-4 pb-48 relative z-10"
     >
       <SectionTitle label="Projects" title="项目作品" desc="将创意变为现实的精选项目集" />

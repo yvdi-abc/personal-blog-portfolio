@@ -28,7 +28,7 @@ export default function Contact() {
   ];
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="w-[90%] max-w-4xl mx-auto mt-24 md:mt-28 px-4 pb-32 relative z-10">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }} className="w-[90%] max-w-4xl mx-auto mt-24 md:mt-28 px-4 pb-32 relative z-10">
       <SectionTitle label="Contact" title="联系我" desc="期待与你的交流" />
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-4">
@@ -38,10 +38,9 @@ export default function Contact() {
               href={item.link}
               target={item.link.startsWith('http') ? "_blank" : undefined}
               rel={item.link.startsWith('http') ? "noopener noreferrer" : undefined}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, type: "spring" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: i * 0.05, duration: 0.2 }}
               className="glass rounded-xl p-4 flex items-center gap-4 hover:translate-x-1 transition-all cursor-pointer"
             >
               <div className="w-10 h-10 rounded-lg bg-teal-500/10 flex items-center justify-center text-lg">{item.icon}</div>
@@ -53,8 +52,9 @@ export default function Contact() {
           ))}
         </div>
         <motion.form onSubmit={handleSubmit}
-          initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-          transition={{ type: "spring" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.2 }}
           className="glass rounded-2xl p-6 space-y-4">
           <div><input type="text" placeholder="你的名字" required className="w-full px-4 py-3 rounded-xl bg-white/50 dark:bg-slate-700/50 border border-white/30 dark:border-white/5 text-sm text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/50" /></div>
           <div><input type="email" placeholder="your@email.com" required className="w-full px-4 py-3 rounded-xl bg-white/50 dark:bg-slate-700/50 border border-white/30 dark:border-white/5 text-sm text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/50" /></div>

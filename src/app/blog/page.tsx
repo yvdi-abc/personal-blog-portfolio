@@ -115,7 +115,7 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen w-[90%] max-w-6xl mx-auto mt-24 md:mt-28 px-4 relative z-10 pb-32">
-      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
         <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-3">
           技术博客
         </h1>
@@ -126,9 +126,9 @@ export default function Blog() {
 
       {/* 搜索和过滤栏 */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
         className="mb-8 space-y-4"
       >
         {/* 搜索框 */}
@@ -194,7 +194,7 @@ export default function Blog() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
+        transition={{ duration: 0.2 }}
       >
         {filteredPosts.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

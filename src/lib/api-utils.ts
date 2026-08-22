@@ -119,8 +119,9 @@ export function withAuth(
 export function parseDataArray(content: string, exportName: string): unknown[] | null {
   try {
     // 匹配导出的数组变量，支持 const/let/export const 等形式
+    // 使用更宽松的匹配，捕获从 = 或 : 到分号或文件末尾的所有内容
     const regex = new RegExp(
-      `(?:export\\s+)?(?:const|let|var)\\s+${exportName}\\s*[:=]\\s*([\\s\\S]*?)(?:;\\s*$|\\n\\n|$)`,
+      `(?:export\\s+)?(?:const|let|var)\\s+${exportName}\\s*(?::\\s*[^=]+)?\\s*=\\s*([\\s\\S]*?)(?:;\\s*(?:\\n|$))`,
       'm'
     );
     const match = content.match(regex);
@@ -129,17 +130,24 @@ export function parseDataArray(content: string, exportName: string): unknown[] |
       return null;
     }
 
-    // 提取数组部分，去除类型标注
+    // 提取数组部分
     let arrayStr = match[1].trim();
 
-    // 移除 TypeScript 类型标注 (例如: Array[] = [...])
-    arrayStr = arrayStr.replace(/^[^[{]*/, '');
+    // 移除可能的尾随分号
+    if (arrayStr.endsWith(';')) {
+      arrayStr = arrayStr.slice(0, -1).trim();
+    }
 
-    // 使用 JSON5 兼容的方式解析 (移除尾随逗号等)
-    arrayStr = arrayStr
-      .replace(/,(\s*[}\]])/g, '$1') // 移除尾随逗号
-      .replace(/'/g, '"') // 单引号转双引号
-      .replace(/(\w+):/g, '"$1":'); // 属性名加引号
+    // 处理 JSON5 风格的数据：
+    // 1. 移除尾随逗号
+    arrayStr = arrayStr.replace(/,(\s*[}\]])/g, '$1');
+
+    // 2. 处理单引号（只在不是已经是双引号的情况下）
+    arrayStr = arrayStr.replace(/'/g, '"');
+
+    // 3. 为没有引号的对象属性名添加引号（但不影响已有引号的）
+    // 匹配 word: (但不是 "word":)
+    arrayStr = arrayStr.replace(/([{,]\s*)(\w+)(\s*):/g, '$1"$2"$3:');
 
     const parsed = JSON.parse(arrayStr);
 
@@ -150,6 +158,7 @@ export function parseDataArray(content: string, exportName: string): unknown[] |
     return parsed;
   } catch (error) {
     console.error(`Failed to parse data array "${exportName}":`, error);
+    console.error('Content preview:', content.substring(0, 200));
     return null;
   }
 }

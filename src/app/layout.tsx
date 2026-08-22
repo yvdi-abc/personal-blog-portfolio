@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { MusicProvider } from "@/components/MusicProvider";
 import { ToastProvider } from "@/components/ToastProvider";
+import { EffectsProvider } from "@/components/EffectsProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
@@ -29,18 +30,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-serif min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-1000">
         <ThemeProvider>
           <ToastProvider>
-            <MusicProvider>
-              <SplashScreen />
-              <ConditionalEffects />
-              <GlobalToolbox />
-              <FloatingPlayer />
-              <AIAssistant />
-              <Navbar />
-              <PageTransition>
-                {children}
-              </PageTransition>
-              <Footer />
-            </MusicProvider>
+            <EffectsProvider>
+              <MusicProvider>
+                <SplashScreen />
+                <ConditionalEffects />
+                <GlobalToolbox />
+                <FloatingPlayer />
+                <AIAssistant />
+                <Navbar />
+                <PageTransition>
+                  {children}
+                </PageTransition>
+                <Footer />
+              </MusicProvider>
+            </EffectsProvider>
           </ToastProvider>
         </ThemeProvider>
       </body>

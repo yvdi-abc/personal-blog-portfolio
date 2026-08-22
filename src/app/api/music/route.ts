@@ -11,6 +11,7 @@ type SongResult = {
   artist?: string;
   cover?: string;
   url?: string;
+  fallbackUrl?: string;
   lrc?: string;
   error?: string;
 };

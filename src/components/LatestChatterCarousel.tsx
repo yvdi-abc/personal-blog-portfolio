@@ -5,60 +5,40 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CardContainer, CardBody, CardItem } from '@/components/ui/3d-card';
+import type { Chatter } from '@/lib/content-repository';
 
-interface Chatter {
-  slug: string;
-  title: string;
-  description: string;
-  cover?: string;
-  date?: string;
-}
-
-const DEFAULT_CHATTERS: Chatter[] = [
-  {
-    slug: '1',
-    title: '今天天气真好',
-    description: '适合写代码，适合思考人生 ☀️',
-    cover: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop',
-    date: '2026-07-31',
-  },
-  {
-    slug: '2',
-    title: '解决了一个困扰三天的bug',
-    description: '成就感爆棚！原来是一个小小的逻辑错误 💪',
-    cover: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1000&auto=format&fit=crop',
-    date: '2026-07-30',
-  },
-  {
-    slug: '3',
-    title: '学习新技术的过程',
-    description: '总是令人着迷，每天都在进步 🚀',
-    cover: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop',
-    date: '2026-07-29',
-  },
-];
-
-export default function LatestChatterCarousel({ chatters }: { chatters?: any[] }) {
+export default function LatestChatterCarousel({ chatters }: { chatters: Chatter[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const displayChatters = chatters && chatters.length > 0 ? chatters : DEFAULT_CHATTERS;
 
   useEffect(() => {
-    if (displayChatters.length <= 1 || isHovering) return;
+    if (chatters.length <= 1 || isHovering) return;
 
     timerRef.current = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % displayChatters.length);
+      setCurrentIndex((prev) => (prev + 1) % chatters.length);
     }, 6000);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [displayChatters.length, isHovering]);
+  }, [chatters.length, isHovering]);
 
-  if (!displayChatters || displayChatters.length === 0) return null;
+  if (!chatters || chatters.length === 0) {
+    return (
+      <CardContainer className="w-full h-full min-h-[220px]">
+        <CardBody className="w-full h-full">
+          <CardItem translateZ="50" className="w-full h-full">
+            <div className="w-full h-full rounded-3xl bg-white/40 dark:bg-slate-800/50 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-xl overflow-hidden relative group min-h-[220px] flex flex-col items-center justify-center p-6">
+              <p className="text-slate-500 dark:text-slate-400 text-sm">暂无碎语</p>
+            </div>
+          </CardItem>
+        </CardBody>
+      </CardContainer>
+    );
+  }
 
-  const currentChatter = displayChatters[currentIndex];
+  const currentChatter = chatters[currentIndex];
 
   const holoVariants = {
     initial: { opacity: 0, scale: 0.95, filter: "blur(10px)" },
@@ -74,7 +54,7 @@ export default function LatestChatterCarousel({ chatters }: { chatters?: any[] }
           className="w-full h-full"
         >
           <div className="w-full h-full rounded-3xl bg-white/40 dark:bg-slate-800/50 backdrop-blur-md border border-white/40 dark:border-white/10 shadow-xl overflow-hidden relative group min-h-[220px] flex flex-col">
-            <Link href={currentChatter.slug === 'none' ? '/moments' : `/moments`} className="absolute inset-0 z-20" aria-label={`查看杂谈: ${currentChatter.title}`} />
+            <Link href={`/chatter/${currentChatter.slug}`} className="absolute inset-0 z-20" aria-label={`查看碎语: ${currentChatter.title}`} />
 
             <AnimatePresence mode="wait">
               <motion.div
@@ -107,13 +87,13 @@ export default function LatestChatterCarousel({ chatters }: { chatters?: any[] }
                 {currentChatter.title}
               </CardItem>
               <CardItem translateZ="70" as="p" className="text-sm text-slate-300 font-medium leading-relaxed drop-shadow-md line-clamp-2">
-                {currentChatter.description}
+                {currentChatter.content}
               </CardItem>
             </div>
 
-            {displayChatters.length > 1 && (
+            {chatters.length > 1 && (
               <CardItem translateZ="90" className="absolute bottom-5 right-6 z-30 flex gap-2">
-                {displayChatters.map((_, i) => (
+                {chatters.map((_, i) => (
                   <button
                     key={i}
                     onClick={(e) => {

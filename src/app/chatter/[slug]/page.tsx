@@ -1,17 +1,19 @@
-import { chattersData } from '@/data/chatters';
+import { getChatters } from '@/lib/content-repository';
 import { siteConfig } from "@/siteConfig";
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
-  return chattersData.map((chatter) => ({
+  const chatters = await getChatters();
+  return chatters.map((chatter) => ({
     slug: chatter.slug,
   }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const chatter = chattersData.find(c => c.slug === slug);
+  const chatters = await getChatters();
+  const chatter = chatters.find(c => c.slug === slug);
 
   if (!chatter) {
     return {
@@ -27,7 +29,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ChatterDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const chatter = chattersData.find(c => c.slug === slug);
+  const chatters = await getChatters();
+  const chatter = chatters.find(c => c.slug === slug);
 
   if (!chatter) {
     notFound();
@@ -105,7 +108,7 @@ export default async function ChatterDetailPage({ params }: { params: Promise<{ 
             更多碎语
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {chattersData
+            {chatters
               .filter(c => c.slug !== chatter.slug)
               .slice(0, 2)
               .map(related => (

@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { albums } from '@/data/albums';
+import type { Album } from '@/data/albums';
 import { CardContainer, CardBody, CardItem } from '@/components/ui/3d-card';
 
-export default function PhotoWallPreview() {
+export default function PhotoWallPreview({ albums }: { albums: Album[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);

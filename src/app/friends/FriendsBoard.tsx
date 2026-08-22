@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { friendsData } from '@/data/friends';
+import type { Friend } from '@/lib/content-repository';
 import { siteConfig } from "@/siteConfig";
 
 const containerVariants = {
@@ -18,7 +18,7 @@ const itemVariants = {
   show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring" as const, stiffness: 300, damping: 24 } }
 };
 
-export default function FriendsBoard() {
+export default function FriendsBoard({ friends }: { friends: Friend[] }) {
   const [isCopied, setIsCopied] = useState(false);
 
   const applyFormat = `名称：${siteConfig.author.name}
@@ -52,7 +52,7 @@ export default function FriendsBoard() {
         animate="show"
         className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"
       >
-        {friendsData.map((friend) => (
+        {friends.map((friend) => (
           <motion.div key={friend.id} variants={itemVariants} className="h-full">
             <a
               href={friend.url}

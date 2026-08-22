@@ -1,9 +1,8 @@
 "use client";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { useRouter } from "next/navigation";
-import { projectsData } from "@/data";
 
-export default function ProjectsBlock() {
+export default function ProjectsBlock({ projectCount }: { projectCount: number }) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -40,7 +39,7 @@ export default function ProjectsBlock() {
                   Projects
                 </span>
                 <span className="text-[10px] text-white/80 font-mono">
-                  {projectsData.length} 个项目
+                  {projectCount} 个项目
                 </span>
               </CardItem>
               <CardItem translateZ="80" as="h3" className="text-3xl font-bold text-white mb-2 underline decoration-blue-400">

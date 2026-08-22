@@ -30,40 +30,40 @@ export const chattersData = [
       "游戏，活动"
     ],
     "mood": "兴奋",
-    "cover": "https://github.com/yvdi-abc/image-hosting/blob/main/1934ebed83eae33f62ce5d050417b95e.jpg"
+    "cover": "https://i.stardots.io/yvdiblog/StarDots-2026082302163201531.jpg"
   },
   {
     "slug": "hello-world",
     "title": "第一条碎语",
+    "content": "今天终于搭建好了自己的博客网站，开启了记录生活和技术的新篇章。希望能坚持更新，记录下每一个值得铭记的瞬间。",
     "date": "2026-07-31",
     "tags": [
       "日常",
       "开始"
     ],
     "mood": "兴奋",
-    "cover": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=800&h=600&fit=crop",
-    "content": "今天终于搭建好了自己的博客网站，开启了记录生活和技术的新篇章。希望能坚持更新，记录下每一个值得铭记的瞬间。"
+    "cover": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=800&h=600&fit=crop"
   },
   {
     "slug": "weekend-hiking",
     "title": "周末徒步",
+    "content": "爬到山顶的那一刻，所有的疲惫都烟消云散。大自然的美景总能治愈一切。周末就应该这样，放下手机，走出去看看这个世界。",
     "date": "2026-07-26",
     "tags": [
       "户外",
       "运动"
     ],
     "mood": "活力",
-    "cover": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&h=600&fit=crop",
-    "content": "爬到山顶的那一刻，所有的疲惫都烟消云散。大自然的美景总能治愈一切。周末就应该这样，放下手机，走出去看看这个世界。"
+    "cover": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&h=600&fit=crop"
   },
   {
     "slug": "music-mood",
     "title": "音乐心情",
+    "content": "循环播放了一整天的歌，歌曲总是能触动内心深处的情感。音乐是最好的情绪调节剂。",
     "date": "2026-07-23",
     "tags": [
       "音乐",
       "放松"
-    ],
-    "content": "循环播放了一整天的歌，歌曲总是能触动内心深处的情感。音乐是最好的情绪调节剂。"
+    ]
   }
 ];

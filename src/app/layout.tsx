@@ -4,24 +4,9 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { MusicProvider } from "@/components/MusicProvider";
 import { ToastProvider } from "@/components/ToastProvider";
 import Navbar from "@/components/Navbar";
-import BackgroundEffects from "@/components/BackgroundEffects";
-import BackgroundSlider from "@/components/BackgroundSlider";
-import ParticleBackground from "@/components/ParticleBackground";
-import DanmakuBackground from "@/components/DanmakuBackground";
-import WeatherEffects from "@/components/WeatherEffects";
-import SplashScreen from "@/components/SplashScreen";
-import PageTransition from "@/components/PageTransition";
-import CursorEffect from "@/components/CursorEffect";
 import Footer from "@/components/Footer";
-import ClickEffect from "@/components/ClickEffect";
-import FireflyEffect from "@/components/FireflyEffect";
-import SakuraEffect from "@/components/SakuraEffect";
-import GlobalToolbox from "@/components/GlobalToolbox";
-import WindyGrass from "@/components/WindyGrass";
-import RainEffect from "@/components/RainEffect";
-import GlobalSnow from "@/components/GlobalSnow";
-import FloatingPlayer from "@/components/FloatingPlayer";
-import AIAssistant from "@/components/AIAssistant";
+import PageTransition from "@/components/PageTransition";
+import GlobalEffects from "@/components/GlobalEffects";
 import { siteConfig } from "@/siteConfig";
 
 export const metadata: Metadata = {
@@ -41,22 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <ToastProvider>
             <MusicProvider>
-              <SplashScreen />
-              <BackgroundSlider />
-              <ParticleBackground />
-              <DanmakuBackground />
-              <FireflyEffect />
-              <SakuraEffect />
-              <WindyGrass />
-              <RainEffect />
-              <GlobalSnow />
-              <WeatherEffects />
-              <BackgroundEffects />
-              <CursorEffect />
-              <ClickEffect />
-              <GlobalToolbox />
-              <FloatingPlayer />
-              <AIAssistant />
+              <GlobalEffects />
               <Navbar />
               <PageTransition>
                 {children}

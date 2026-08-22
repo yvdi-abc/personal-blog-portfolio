@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const cv = canvasRef.current;
@@ -50,32 +51,61 @@ export default function ParticleBackground() {
       P = Array.from({ length: n }, () => new Pt());
     };
 
-    // Draw connections between nearby particles
+    // 简化连线逻辑，减少计算量
     const link = () => {
+      const maxConnections = 3; // 限制每个粒子的最大连接数
       for (let i = 0; i < P.length; i++) {
-        for (let j = i + 1; j < P.length; j++) {
+        let connections = 0;
+        for (let j = i + 1; j < P.length && connections < maxConnections; j++) {
           const dx = P[i].x - P[j].x, dy = P[i].y - P[j].y, d = Math.sqrt(dx * dx + dy * dy);
           if (d < 100) {
             ctx.beginPath(); ctx.moveTo(P[i].x, P[i].y); ctx.lineTo(P[j].x, P[j].y);
             ctx.strokeStyle = `hsla(170,50%,60%,${(1 - d / 100) * 0.05})`;
             ctx.lineWidth = 0.5; ctx.stroke();
+            connections++;
           }
         }
       }
     };
 
-    const anim = () => {
-      ctx.clearRect(0, 0, w, h);
-      P.forEach((p) => { p.up(); p.dr(); });
-      link();
+    let lastTime = 0;
+    const targetFPS = 30; // 降低到 30 FPS
+    const frameInterval = 1000 / targetFPS;
+
+    const anim = (currentTime: number) => {
+      if (!isVisible) {
+        rid = requestAnimationFrame(anim);
+        return;
+      }
+
+      const elapsed = currentTime - lastTime;
+      if (elapsed > frameInterval) {
+        ctx.clearRect(0, 0, w, h);
+        P.forEach((p) => { p.up(); p.dr(); });
+        link();
+        lastTime = currentTime - (elapsed % frameInterval);
+      }
       rid = requestAnimationFrame(anim);
     };
 
-    document.addEventListener("mousemove", (e) => { mx = e.clientX; my = e.clientY; });
-    resize(); init(); anim();
-    window.addEventListener("resize", () => { resize(); init(); });
-    return () => cancelAnimationFrame(rid);
-  }, []);
+    const handleMouseMove = (e: MouseEvent) => { mx = e.clientX; my = e.clientY; };
+    const handleVisibilityChange = () => setIsVisible(!document.hidden);
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    resize(); init();
+    rid = requestAnimationFrame(anim);
+
+    const resizeHandler = () => { resize(); init(); };
+    window.addEventListener("resize", resizeHandler);
+
+    return () => {
+      cancelAnimationFrame(rid);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("resize", resizeHandler);
+    };
+  }, [isVisible]);
 
   return (
     <canvas ref={canvasRef}

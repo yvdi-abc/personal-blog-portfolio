@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function ClickEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -60,31 +61,48 @@ export default function ClickEffect() {
       ripples.push(new Ripple(e.clientX, e.clientY));
     };
 
+    const handleVisibilityChange = () => setIsVisible(!document.hidden);
+
     window.addEventListener('click', handleClick);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let animationId: number;
+    let lastTime = 0;
+    const targetFPS = 60;
+    const frameInterval = 1000 / targetFPS;
 
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = 'rgba(129, 140, 248, 0.5)';
-
-      for (let i = 0; i < ripples.length; i++) {
-        ripples[i].update();
-        ripples[i].draw();
-        if (ripples[i].opacity <= 0) {
-          ripples.splice(i, 1);
-          i--;
-        }
+    const animate = (currentTime: number) => {
+      if (!isVisible) {
+        animationId = requestAnimationFrame(animate);
+        return;
       }
-      requestAnimationFrame(animate);
+
+      const elapsed = currentTime - lastTime;
+      if (elapsed > frameInterval) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = 'rgba(129, 140, 248, 0.5)';
+
+        for (let i = ripples.length - 1; i >= 0; i--) {
+          ripples[i].update();
+          ripples[i].draw();
+          if (ripples[i].opacity <= 0) {
+            ripples.splice(i, 1);
+          }
+        }
+        lastTime = currentTime - (elapsed % frameInterval);
+      }
+      animationId = requestAnimationFrame(animate);
     };
-    animate();
+    animationId = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('click', handleClick);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      cancelAnimationFrame(animationId);
     };
-  }, []);
+  }, [isVisible]);
 
   return (
     <canvas

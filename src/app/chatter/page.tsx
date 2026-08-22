@@ -1,5 +1,5 @@
 import ChatterBoard from './ChatterBoard';
-import { chattersData } from '@/data/chatters';
+import { getChatters } from '@/lib/content-repository';
 import { siteConfig } from "@/siteConfig";
 
 export const metadata = {
@@ -7,10 +7,12 @@ export const metadata = {
   description: "日常碎片与灵感记录",
 };
 
-export default function ChatterPage() {
+export default async function ChatterPage() {
+  const chatters = await getChatters();
+
   return (
     <div className="min-h-screen relative pb-20">
-      <ChatterBoard chatters={chattersData} />
+      <ChatterBoard chatters={chatters} />
     </div>
   );
 }

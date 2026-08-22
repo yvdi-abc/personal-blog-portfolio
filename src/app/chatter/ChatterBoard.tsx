@@ -3,16 +3,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { siteConfig } from "@/siteConfig";
-
-type Chatter = {
-  slug: string;
-  title: string;
-  date: string;
-  tags: string[];
-  mood?: string;
-  cover?: string;
-  content: string;
-};
+import type { Chatter } from '@/lib/content-repository';
 
 export default function ChatterBoard({ chatters }: { chatters: Chatter[] }) {
   const [searchQuery, setSearchQuery] = useState("");

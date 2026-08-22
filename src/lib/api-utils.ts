@@ -109,3 +109,47 @@ export function withAuth(
     }
   };
 }
+
+/**
+ * 从 TypeScript 数据文件内容中解析导出的数组
+ * @param content - 文件内容字符串
+ * @param exportName - 导出变量名
+ * @returns 解析后的数组，如果解析失败则返回 null
+ */
+export function parseDataArray(content: string, exportName: string): unknown[] | null {
+  try {
+    // 匹配导出的数组变量，支持 const/let/export const 等形式
+    const regex = new RegExp(
+      `(?:export\\s+)?(?:const|let|var)\\s+${exportName}\\s*[:=]\\s*([\\s\\S]*?)(?:;\\s*$|\\n\\n|$)`,
+      'm'
+    );
+    const match = content.match(regex);
+
+    if (!match || !match[1]) {
+      return null;
+    }
+
+    // 提取数组部分，去除类型标注
+    let arrayStr = match[1].trim();
+
+    // 移除 TypeScript 类型标注 (例如: Array[] = [...])
+    arrayStr = arrayStr.replace(/^[^[{]*/, '');
+
+    // 使用 JSON5 兼容的方式解析 (移除尾随逗号等)
+    arrayStr = arrayStr
+      .replace(/,(\s*[}\]])/g, '$1') // 移除尾随逗号
+      .replace(/'/g, '"') // 单引号转双引号
+      .replace(/(\w+):/g, '"$1":'); // 属性名加引号
+
+    const parsed = JSON.parse(arrayStr);
+
+    if (!Array.isArray(parsed)) {
+      return null;
+    }
+
+    return parsed;
+  } catch (error) {
+    console.error(`Failed to parse data array "${exportName}":`, error);
+    return null;
+  }
+}

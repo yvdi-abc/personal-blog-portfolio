@@ -1,7 +1,6 @@
 "use client";
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
 import { siteConfig } from "@/siteConfig";
 
 type Chatter = {
@@ -79,18 +78,12 @@ export default function ChatterBoard({ chatters }: { chatters: Chatter[] }) {
         </div>
       </div>
 
-      <motion.div layout className="columns-2 lg:columns-3 gap-3 md:gap-6 space-y-3 md:space-y-6">
-        <AnimatePresence mode='popLayout'>
-          {filteredChatters.map((chatter) => (
-            <motion.div
-              layout
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              key={chatter.slug}
-              className="break-inside-avoid"
-            >
+      <div className="columns-2 lg:columns-3 gap-3 md:gap-6 space-y-3 md:space-y-6">
+        {filteredChatters.map((chatter) => (
+          <div
+            key={chatter.slug}
+            className="break-inside-avoid"
+          >
               <Link
                 href={`/chatter/${chatter.slug}`}
                 className="block rounded-2xl md:rounded-[32px] bg-white/40 dark:bg-slate-800/40 backdrop-blur-2xl border border-white/50 dark:border-white/5 shadow-md md:shadow-xl hover:shadow-2xl transition-all duration-500 group relative overflow-hidden"
@@ -141,10 +134,9 @@ export default function ChatterBoard({ chatters }: { chatters: Chatter[] }) {
                   )}
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
-        </AnimatePresence>
-      </motion.div>
+      </div>
 
       {filteredChatters.length === 0 && (
         <div className="text-center py-20 text-slate-500 dark:text-slate-400 font-bold">

@@ -7,7 +7,6 @@ export default function ParticleBackground() {
   useEffect(() => {
     const cv = canvasRef.current;
     if (!cv) return;
-    if (window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
 
     const ctx = cv.getContext("2d")!;
     const hues = [150, 165, 175, 190, 35, 45, 55]; // teal/cyan + amber

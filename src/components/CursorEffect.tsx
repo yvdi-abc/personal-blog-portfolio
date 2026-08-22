@@ -18,7 +18,10 @@ export default function CursorEffect() {
   }, []);
 
   useEffect(() => {
-    if (window.matchMedia("(pointer:coarse)").matches) return;
+    // 检测是否为触摸设备
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) return;
+
     document.documentElement.style.cursor = "none";
 
     const onMove = (e: MouseEvent) => {

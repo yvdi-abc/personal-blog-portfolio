@@ -84,9 +84,10 @@ export default function ChatterBoard({ chatters }: { chatters: Chatter[] }) {
           {filteredChatters.map((chatter) => (
             <motion.div
               layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               key={chatter.slug}
               className="break-inside-avoid"
             >

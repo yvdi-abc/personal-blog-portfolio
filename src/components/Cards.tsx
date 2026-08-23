@@ -1,6 +1,10 @@
 "use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { ExternalLink } from "lucide-react";
 
 export function BlogCard({ title, desc, date, tag, slug, index = 0 }: {
   title: string; desc: string; date: string; tag: string; slug: string; index?: number;
@@ -12,16 +16,23 @@ export function BlogCard({ title, desc, date, tag, slug, index = 0 }: {
       viewport={{ once: true }}
       transition={{ delay: index * 0.08, type: "spring", damping: 18, stiffness: 100 }}
     >
-      <Link href={`/blog/${slug}`}
-        className="block glass rounded-2xl p-6 glass-hover group">
-        <div className="flex items-center gap-3 mb-3 text-xs text-slate-500 dark:text-slate-400">
-          <span className="px-2.5 py-1 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 font-semibold">{tag}</span>
-          <span>{date}</span>
-        </div>
-        <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2 group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">
-          {title}
-        </h3>
-        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">{desc}</p>
+      <Link href={`/blog/${slug}`}>
+        <Card className="glass glass-hover group transition-all hover:shadow-xl">
+          <CardHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <Badge variant="secondary" className="bg-teal-500/10 text-teal-600 dark:text-teal-400 hover:bg-teal-500/20">
+                {tag}
+              </Badge>
+              <span className="text-xs text-slate-500 dark:text-slate-400">{date}</span>
+            </div>
+            <CardTitle className="group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">
+              {title}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription className="line-clamp-2">{desc}</CardDescription>
+          </CardContent>
+        </Card>
       </Link>
     </motion.div>
   );
@@ -30,19 +41,34 @@ export function BlogCard({ title, desc, date, tag, slug, index = 0 }: {
 export function ProjectCard({ name, desc, tags, icon, link, index = 0 }: {
   name: string; desc: string; tags: string[]; icon: string; link?: string; index?: number;
 }) {
-  const content = (
-    <>
-      <div className="text-3xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">{icon}</div>
-      <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2 group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">{name}</h3>
-      <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">{desc}</p>
-      <div className="flex flex-wrap gap-2">
-        {tags.map((t) => (
-          <span key={t} className="px-2.5 py-1 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 text-xs font-semibold">
-            {t}
-          </span>
-        ))}
-      </div>
-    </>
+  const CardWrapper = link ? HoverCard : "div";
+
+  const cardContent = (
+    <Card className="glass glass-hover group transition-all hover:shadow-xl hover:scale-[1.02] cursor-pointer h-full">
+      <CardHeader>
+        <div className="flex items-start justify-between mb-2">
+          <div className="text-4xl group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
+            {icon}
+          </div>
+          {link && (
+            <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-teal-500 transition-colors" />
+          )}
+        </div>
+        <CardTitle className="group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">
+          {name}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <CardDescription className="leading-relaxed">{desc}</CardDescription>
+        <div className="flex flex-wrap gap-2">
+          {tags.map((t) => (
+            <Badge key={t} variant="secondary" className="bg-teal-500/10 text-teal-600 dark:text-teal-400">
+              {t}
+            </Badge>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 
   return (
@@ -51,20 +77,30 @@ export function ProjectCard({ name, desc, tags, icon, link, index = 0 }: {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.08, type: "spring", damping: 18, stiffness: 100 }}
+      className="h-full"
     >
       {link ? (
-        <a
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block glass rounded-2xl p-6 glass-hover group cursor-pointer"
-        >
-          {content}
-        </a>
+        <HoverCard openDelay={200}>
+          <HoverCardTrigger asChild>
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block h-full"
+            >
+              {cardContent}
+            </a>
+          </HoverCardTrigger>
+          <HoverCardContent className="w-80" side="top">
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold">🔗 项目链接</h4>
+              <p className="text-xs text-muted-foreground break-all">{link}</p>
+              <p className="text-xs text-teal-600 dark:text-teal-400">点击卡片访问项目</p>
+            </div>
+          </HoverCardContent>
+        </HoverCard>
       ) : (
-        <div className="glass rounded-2xl p-6 glass-hover group cursor-pointer">
-          {content}
-        </div>
+        cardContent
       )}
     </motion.div>
   );

@@ -19,7 +19,7 @@ export const chattersData = [
       "游戏，活动"
     ],
     "mood": "兴奋",
-    "cover": "https://github.com/yvdi-abc/image-hosting/blob/main/13b569d863e1b57129b6447e5058c6ee.jpg"
+    "cover": "https://i.stardots.io/yvdiblog/StarDots-2026082319103136040.jpg"
   },
   {
     "slug": "chatter-1787303515860",

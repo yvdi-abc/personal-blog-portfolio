@@ -8,7 +8,7 @@ export const chattersData = [
       "游戏"
     ],
     "mood": "复杂",
-    "cover": "https://github.com/yvdi-abc/image-hosting/blob/main/b40dc7178808755f5f16a812facf5153.jpg"
+    "cover": "https://i.stardots.io/yvdiblog/StarDots-2026082319092172001.jpg"
   },
   {
     "slug": "chatter-1787306081079",

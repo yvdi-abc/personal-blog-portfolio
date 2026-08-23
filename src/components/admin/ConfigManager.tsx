@@ -32,6 +32,7 @@ export default function ConfigManager() {
     try {
       const res = await fetch('/api/admin/config');
       const data = await res.json();
+      // config API 直接返回 { config, aboutContent }，不是 successResponse 格式
       setConfig(data.config || {});
       setAboutContent(data.aboutContent || '');
     } catch (error) {

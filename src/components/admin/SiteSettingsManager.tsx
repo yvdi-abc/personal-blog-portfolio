@@ -45,10 +45,11 @@ export default function SiteSettingsManager() {
     try {
       const res = await fetch('/api/admin/site-settings');
       const data = await res.json();
+      const settingsData = data.data || data; // 解包 successResponse 格式
       setSettings({
-        ...data,
-        musicIds: data.musicIds || [],
-        danmakuList: data.danmakuList || [],
+        ...settingsData,
+        musicIds: settingsData.musicIds || [],
+        danmakuList: settingsData.danmakuList || [],
       });
     } catch (error) {
       console.error('Failed to load settings:', error);

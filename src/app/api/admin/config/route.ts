@@ -13,11 +13,11 @@ export async function GET() {
     // 解析配置对象
     const config = {
       title: extractValue(configContent, 'title'),
-      authorName: extractValue(configContent, 'authorName'),
+      authorName: extractNestedValue(configContent, 'author', 'name'),
       bio: extractValue(configContent, 'bio'),
       avatarUrl: extractValue(configContent, 'avatarUrl'),
-      githubUrl: extractValue(configContent, 'github'),
-      email: extractValue(configContent, 'email'),
+      githubUrl: extractNestedValue(configContent, 'social', 'github'),
+      email: extractNestedValue(configContent, 'social', 'email'),
     };
 
     // 读取关于页面内容
@@ -40,13 +40,17 @@ export async function POST(request: NextRequest) {
     // 读取原始配置文件
     let configContent = fs.readFileSync(configFilePath, 'utf8');
 
-    // 更新配置值
+    // 更新顶层配置值
     configContent = replaceValue(configContent, 'title', config.title);
-    configContent = replaceValue(configContent, 'authorName', config.authorName);
     configContent = replaceValue(configContent, 'bio', config.bio);
     configContent = replaceValue(configContent, 'avatarUrl', config.avatarUrl);
-    configContent = replaceValue(configContent, 'github', config.githubUrl);
-    configContent = replaceValue(configContent, 'email', config.email);
+
+    // 更新嵌套的 author.name
+    configContent = replaceNestedValue(configContent, 'author', 'name', config.authorName);
+
+    // 更新嵌套的 social.github 和 social.email
+    configContent = replaceNestedValue(configContent, 'social', 'github', config.githubUrl);
+    configContent = replaceNestedValue(configContent, 'social', 'email', config.email);
 
     // 写回配置文件
     fs.writeFileSync(configFilePath, configContent, 'utf8');
@@ -77,6 +81,20 @@ function extractValue(content: string, key: string): string {
   return '';
 }
 
+// 辅助函数：提取嵌套配置值
+function extractNestedValue(content: string, parent: string, key: string): string {
+  // 匹配 parent: { ... key: "value" ... }
+  const parentRegex = new RegExp(`${parent}:\\s*\\{([^}]+)\\}`, 'is');
+  const parentMatch = content.match(parentRegex);
+
+  if (parentMatch) {
+    const innerContent = parentMatch[1];
+    return extractValue(innerContent, key);
+  }
+
+  return '';
+}
+
 // 辅助函数：替换配置值
 function replaceValue(content: string, key: string, value: string): string {
   const patterns = [
@@ -88,6 +106,26 @@ function replaceValue(content: string, key: string, value: string): string {
     if (regex.test(content)) {
       return content.replace(regex, replacement);
     }
+  }
+
+  return content;
+}
+
+// 辅助函数：替换嵌套配置值
+function replaceNestedValue(content: string, parent: string, key: string, value: string): string {
+  // 匹配整个 parent: { ... } 块
+  const parentRegex = new RegExp(`(${parent}:\\s*\\{)([^}]+)(\\})`, 'is');
+  const match = content.match(parentRegex);
+
+  if (match) {
+    const before = match[1];
+    const innerContent = match[2];
+    const after = match[3];
+
+    // 在内部内容中替换键值
+    const updatedInner = replaceValue(innerContent, key, value);
+
+    return content.replace(parentRegex, before + updatedInner + after);
   }
 
   return content;
